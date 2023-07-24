@@ -28,31 +28,35 @@ const todos = ref<{ id: number; text: string }[]>([
   { id: 5, text: 'Call a friend' },
 ]);
 
-const inputValue = "";
-
 //Add function to add elements to existing array of todos
 function addTodo(inputValue: string) {
-    if (inputValue) {
-  
-      //define the largest id in the todos array
-      const maxId = Math.max(...todos.value.map((todo: { id: number; text: string }) => todo.id));
-  
-      //add new todo element to list, position: maxId + 1
-      const newTodo = { id: maxId + 1, text: inputValue};
-  
-      todos.value.push(newTodo);
+    
+    if (!inputValue) {
+      return;
     }
+
+    //define the largest id in the todos array
+    const maxId = Math.max(...todos.value.map((todo: { id: number; text: string }) => todo.id));
+
+    //add new todo element to list, position: maxId + 1
+    const newTodo = { id: maxId + 1, text: inputValue};
+
+    todos.value.push(newTodo);
+    
   }
 
 //Delete function to remove elements from todos array
 function removeTodo(todoId: number) {
   const index = todos.value.findIndex(todo => todo.id === todoId);
-  if (index !== -1) {
-    todos.value.splice(index, 1);
-
-    // Updating the todos array to trigger reactivity
-    todos.value = todos.value.slice();
+  if (index == -1) {
+    return
   }
+
+  todos.value.splice(index, 1);
+
+  // Updating the todos array to trigger reactivity
+  todos.value = todos.value.slice();
+  
 }
 
 function clearTodo() {

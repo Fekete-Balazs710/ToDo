@@ -8,15 +8,15 @@
                required/>
         <br>
         <TodoButton
-          :button-title="'Add to list'"
-          :color="'green'"
+          button-title="Add to list"
+          color="green"
           type="submit">
         </TodoButton>
       </form>
 
       <TodoButton 
-        :button-title="'Clear'"
-        :color="'red'"
+        button-title="Clear"
+        color="red"
         @click="clearTodo">
       </TodoButton>
     </div>
@@ -29,7 +29,7 @@
   //Add emit to modify data in parent component
   const emit = defineEmits(['clearTodo', 'addTodo'])
 
-  let inputValue = ref('');
+  const inputValue = ref('');
   
   //Add function to add elements to existing array of todos
   function addTodo() {

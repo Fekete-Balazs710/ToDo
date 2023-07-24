@@ -2,7 +2,7 @@
     <div class="container mx-auto text-center p-8">
 
     <ul class="mt-5">
-        <li v-for="todo in props.todos" :key="todo.id">
+        <li v-for="todo in todos" :key="todo.id">
             <TodoListElement
                 :todoTitle="todo.text"
                 :todoId="todo.id"
@@ -18,7 +18,7 @@
 import TodoListElement from './TodoListElement.vue';
 
 //Receive data from parent component
-const props = defineProps(['todos']);
+defineProps(['todos']);
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['deleteTodo'])
