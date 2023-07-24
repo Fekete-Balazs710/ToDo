@@ -5,7 +5,11 @@ export default {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        primary: "Neue Haas Grotesk Display Pro"
+      }
+    },
   },
   plugins: [],
 }
