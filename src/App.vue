@@ -2,8 +2,7 @@
   <div>
     <TodoHeader />
 
-    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"
-            :inputValue="inputValue"/>
+    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
 
     <TodoDisplay :todos="todos" @deleteTodo="removeTodo"/> 
   </div> 
