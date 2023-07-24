@@ -1,6 +1,6 @@
 <template>
   <div>
-    <TodoHeader />
+    <TodoHeader @addTodo="addTodo"/>
 
     <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
 
