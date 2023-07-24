@@ -15,11 +15,11 @@
     <button class="bg-blue-400 hover:bg-blue-500 py-3 px-5 btn btn-blue text-white font-bold rounded-full" @click="clearTodo()">Clear</button>
 
     <ul class="mt-5">
-        <li v-for="todo in todos" :key="todo" class="p-5 shadow border rounded mt-3 flex justify-between">
-            {{ todo }}
+        <li v-for="todo in todos" :key="todo.id" class="p-5 shadow border rounded mt-3 flex justify-between">
+            {{ todo.text }}
             <button
                 class="btn bg-red-400 hover:bg-red-600 px-2 text-white font-bold rounded-md"
-                @click="removeTodo(todo)"
+                @click="removeTodo(todo.id)"
             >x</button>
         </li>
     </ul>
@@ -29,13 +29,13 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-// Array of strings for the todo list elements
-let todos = ref<string[]>([
-  'Buy groceries',
-  'Clean the house',
-  'Finish the report',
-  'Go for a walk',
-  'Call a friend',
+// Array of numbers and strings for the todo list elements
+let todos = ref<{ id: number; text: string }[]>([
+  { id: 1, text: 'Buy groceries' },
+  { id: 2, text: 'Clean the house' },
+  { id: 3, text: 'Finish the report' },
+  { id: 4, text: 'Go for a walk' },
+  { id: 5, text: 'Call a friend' },
 ]);
 
 let inputValue = ref('');
@@ -43,14 +43,21 @@ let inputValue = ref('');
 //Add function to add elements to existing array of todos
 function addTodo() {
   if (inputValue.value) {
-    todos.value.push(inputValue.value);
+
+    //define the largest id in the todos array
+    const maxId = Math.max(...todos.value.map(todo => todo.id));
+
+    //add new todo element to list, position: maxId + 1
+    const newTodo = { id: maxId + 1, text: inputValue.value};
+
+    todos.value.push(newTodo);
     inputValue.value = ''; // Clear the input field
   }
 }
 
 //Delete function to remove elements from todos array
-function removeTodo(todo: string) {
-  const index = todos.value.indexOf(todo);
+function removeTodo(todoId: number) {
+  const index = todos.value.findIndex(todo => todo.id === todoId);
   if (index !== -1) {
     todos.value.splice(index, 1);
 
