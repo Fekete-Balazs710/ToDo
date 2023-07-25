@@ -19,6 +19,7 @@ import TodoListElement from './TodoListElement.vue';
 //Receive data from parent component
 defineProps(['todos']);
 
+
 //Add emit to modify data in parent component
 const emit = defineEmits(['deleteTodo'])
 

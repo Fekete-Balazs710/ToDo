@@ -10,7 +10,7 @@
         </div>
         <div class="flex justify-between mt-10">
             <p class="font-primary font-semibold text-[#757575] md:text-2xl text-base">
-            Cras placerat proin.</p>
+            Todo Description</p>
 
             <TodoCheckbox />
         </div>
@@ -25,6 +25,11 @@ import TodoPriority from './TodoPriority.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
 
 //Receive data from parent component
-defineProps(['todoTitle', 'todoId']);
+interface Props {
+  todoTitle: string
+  todoId?: number
+}
+
+defineProps<Props>()
 
 </script>

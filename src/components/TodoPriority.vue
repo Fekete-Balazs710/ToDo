@@ -3,24 +3,18 @@
         class="rounded-full text-white text-lg font-secondary
             font-semibold text-center
             w-32 appearance-none border-0 px-0 bg-none"
+        v-model="selectedOption" 
         :class="selectedColor"
-        @change="updateColor"
-        v-model="selectedOption"        
+        @change="updateColor()"       
     >
             <option 
-                value="high"
+                v-for="option in OptionsObj" 
+                :value="option.value"
                 class="bg-white text-black"
-            >High</option>
-
-            <option 
-                value="medium"
-                class="bg-white text-black"
-            >Medium</option>
-
-            <option 
-                value="low"
-                class="bg-white text-black"
-            >Low</option>
+            >
+                {{ option.name }}
+            </option>
+            
     </select>
 </template>
 
@@ -32,16 +26,24 @@ const selectedOption = ref("high");
 const selectedColor = ref("bg-[#FF481F]");
 
 const updateColor = () => {
-  switch (selectedOption.value) {
-    case "high":
-      selectedColor.value = "bg-[#FF481F]";
-      break;
-    case "medium":
-      selectedColor.value = "bg-[#FFAB00]";
-      break;
-    case "low":
-      selectedColor.value = "bg-[#38CBCB]";
-      break;
-  }
+  selectedColor.value = colorMap[selectedOption.value];
 };
+
+interface OptionsType {
+    name: string,
+    value: string
+}
+
+const colorMap: { [key: string]: string } = {
+    "high": 'bg-[#FF481F]',
+    "medium": 'bg-[#FFAB00]',
+    "low": 'bg-[#38CBCB]'
+}
+
+const OptionsObj: OptionsType[] = [
+    {name: "High", value: "high"},
+    {name: "Medium", value: "medium"},
+    {name: "Low", value: "low"}
+]
+
 </script>
