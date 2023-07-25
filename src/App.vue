@@ -4,7 +4,12 @@
 
     <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
 
-    <TodoDisplay :todos="todos" @deleteTodo="removeTodo"/> 
+    <div v-if="todos.length === 0">
+      <Notodos/>
+    </div>
+    <div v-else>
+      <TodoDisplay :todos="todos" @deleteTodo="removeTodo"/> 
+    </div> 
   </div> 
 
 </template>
@@ -14,6 +19,7 @@
 import TodoHeader from './components/TodoHeader.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
+import Notodos from './components/NoTodos.vue';
 
 import { ref } from 'vue';
 
