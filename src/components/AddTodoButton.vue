@@ -17,7 +17,7 @@ import CircleSvg from './CircleSvg.vue'
 const emit = defineEmits(['addTodo'])
 
 function todoCreate() {
-    emit('addTodo', 'Test value');
+    emit('addTodo', 'Title');
 }
 
 </script>

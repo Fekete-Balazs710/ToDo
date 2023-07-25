@@ -1,25 +1,30 @@
 <template> 
-    <div class="container">
-        <div class="p-5 shadow border rounded mt-3 flex justify-between">
-            <p>{{ todoTitle }}</p>
-            <button
-                class="btn bg-red-400 hover:bg-red-600 px-2 text-white font-bold rounded-md"
-                @click="removeTodo(todoId)"
-            >x</button>
+    <div class="container p-5 border-2 border-black rounded-2xl mt-8">
+        <div class="flex justify-between ">
+            <p
+                class="text-black font-primary lg:text-4xl text-3xl font-semibold"
+            >{{ todoTitle }}</p>
+            
+            <TodoPriority />
+
         </div>
+        <div class="flex justify-between mt-10">
+            <p class="font-primary font-semibold text-[#757575] md:text-2xl text-base">
+            Cras placerat proin.</p>
+
+            <TodoCheckbox />
+        </div>
+        
     </div>
+    
 </template>
 
 <script setup lang="ts">
 
+import TodoPriority from './TodoPriority.vue';
+import TodoCheckbox from './TodoCheckbox.vue';
+
 //Receive data from parent component
 defineProps(['todoTitle', 'todoId']);
-
-//Add emit to modify data in parent component
-const emit = defineEmits(['deleteTodo'])
-
-function removeTodo(todoId: number) {
-    emit('deleteTodo', todoId);
-}
 
 </script>

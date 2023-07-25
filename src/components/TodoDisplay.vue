@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto text-center p-8 ">
+    <div class="container mx-auto text-center p-8 lg:w-[38rem]">
         <ul class="mt-5">
             <li v-for="todo in todos" :key="todo.id">
                 <TodoListElement

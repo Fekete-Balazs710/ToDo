@@ -2,14 +2,14 @@
   <div>
     <TodoHeader @addTodo="addTodo"/>
 
-    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
-
-    <div v-if="todos.length === 0">
+    <div v-if="!todos.length">
       <Notodos/>
     </div>
     <div v-else>
       <TodoDisplay :todos="todos" @deleteTodo="removeTodo"/> 
     </div> 
+
+    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
   </div> 
 
 </template>
