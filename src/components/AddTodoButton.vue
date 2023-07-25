@@ -3,7 +3,6 @@
         <div class="absolute w-full h-full flex items-center justify-center shrink-0">
             <PlusSvg />
         </div>
-        
         <CircleSvg />
     </div>
 </template>

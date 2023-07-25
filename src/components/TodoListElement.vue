@@ -1,10 +1,12 @@
 <template> 
-    <div class="p-5 shadow border rounded mt-3 flex justify-between">
-        <p>{{ todoTitle }}</p>
-        <button
-            class="btn bg-red-400 hover:bg-red-600 px-2 text-white font-bold rounded-md"
-            @click="removeTodo(todoId)"
-        >x</button>
+    <div class="container">
+        <div class="p-5 shadow border rounded mt-3 flex justify-between">
+            <p>{{ todoTitle }}</p>
+            <button
+                class="btn bg-red-400 hover:bg-red-600 px-2 text-white font-bold rounded-md"
+                @click="removeTodo(todoId)"
+            >x</button>
+        </div>
     </div>
 </template>
 
