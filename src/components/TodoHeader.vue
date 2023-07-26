@@ -1,7 +1,7 @@
 <template>
-    <div class="container mx-auto text-center p-8 flex justify-between w-[40rem]">
+    <div class="container mx-auto text-center p-8 flex items-center justify-between lg:w-[40rem] w-min-[20rem]">
         
-        <h1 class="text-7xl font-primary font-semibold text-black">
+        <h1 class="lg:text-7xl sm:text-6xl text-4xl font-primary font-semibold text-black">
             To do list
         </h1>
 
@@ -18,7 +18,7 @@ import AddTodoButton from './AddTodoButton.vue'
 const emit = defineEmits(['addTodo'])
 
 function todoCreate() {
-    emit('addTodo', 'Test value');
+    emit('addTodo', 'Title');
 }
 
 </script>

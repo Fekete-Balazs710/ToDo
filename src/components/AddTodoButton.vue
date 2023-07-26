@@ -3,7 +3,6 @@
         <div class="absolute w-full h-full flex items-center justify-center shrink-0">
             <PlusSvg />
         </div>
-        
         <CircleSvg />
     </div>
 </template>
@@ -18,7 +17,7 @@ import CircleSvg from './CircleSvg.vue'
 const emit = defineEmits(['addTodo'])
 
 function todoCreate() {
-    emit('addTodo', 'Test value');
+    emit('addTodo', 'Title');
 }
 
 </script>

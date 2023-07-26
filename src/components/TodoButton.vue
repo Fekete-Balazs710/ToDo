@@ -9,6 +9,11 @@
 
 <script setup lang="ts">
 
-defineProps(['buttonTitle', 'color']);
+interface Props {
+  buttonTitle: string
+  color: string
+}
+
+defineProps<Props>()
 
 </script>
