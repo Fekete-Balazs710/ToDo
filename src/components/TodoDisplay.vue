@@ -3,7 +3,7 @@
         <ul class="mt-5">
             <li v-for="todo in todos.slice().reverse()" :key="todo.id">
                 <TodoListElement
-                    :todos="todo"
+                    :todo="todo"
                     @deleteTodo="removeTodo"
                 />
             </li>

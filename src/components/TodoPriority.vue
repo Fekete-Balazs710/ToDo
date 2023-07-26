@@ -36,8 +36,6 @@ const colorMap: ColormapType = {
 
 function updateColor() {
   selectedColor.value = 'bg-' + '[' + colorMap[selectedOption.value] + ']';
-  console.log(selectedColor.value)
-  console.log(colorMap[selectedColor.value])
 }
 
 const optionsObj: OptionsType[] = [

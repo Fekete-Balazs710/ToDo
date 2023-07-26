@@ -44,7 +44,8 @@ function addTodo() {
       title: "Title", 
       description: "Todo Description",
       priority: "High",
-      status: "Unchecked"
+      isChecked: false,
+      isEditing: false
     };
 
     todos.value.push(emptyTodo);
