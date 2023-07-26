@@ -8,7 +8,7 @@
         @change="updateColor()"       
     >
             <option 
-                v-for="option in OptionsObj" 
+                v-for="option in optionsObj" 
                 :value="option.value"
                 class="bg-white text-black"
             >
@@ -21,26 +21,26 @@
 <script setup lang="ts">
 
 import { ref } from "vue";
+import { OptionsType } from '../types/OptionsType'
+import { ColormapType } from '../types/ColormapType'
+
 
 const selectedOption = ref("high");
 const selectedColor = ref("bg-[#FF481F]");
 
-const updateColor = () => {
-  selectedColor.value = colorMap[selectedOption.value];
+const colorMap: ColormapType = {
+  "high": '#FF481F',
+  "medium": '#FFAB00',
+  "low": '#38CBCB'
 };
 
-interface OptionsType {
-    name: string,
-    value: string
+function updateColor() {
+  selectedColor.value = 'bg-' + '[' + colorMap[selectedOption.value] + ']';
+  console.log(selectedColor.value)
+  console.log(colorMap[selectedColor.value])
 }
 
-const colorMap: { [key: string]: string } = {
-    "high": 'bg-[#FF481F]',
-    "medium": 'bg-[#FFAB00]',
-    "low": 'bg-[#38CBCB]'
-}
-
-const OptionsObj: OptionsType[] = [
+const optionsObj: OptionsType[] = [
     {name: "High", value: "high"},
     {name: "Medium", value: "medium"},
     {name: "Low", value: "low"}

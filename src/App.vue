@@ -20,15 +20,29 @@ import Notodos from './components/NoTodos.vue';
 
 import { ref } from 'vue';
 
+import { TodoType } from './types/TodoType'
 
-// Array of numbers and strings for the todo list elements
-const todos = ref<{ id: number; text: string }[]>([
-  { id: 1, text: 'Buy groceries' },
-  { id: 2, text: 'Clean the house' },
-  { id: 3, text: 'Finish the report' },
-  { id: 4, text: 'Go for a walk' },
-  { id: 5, text: 'Call a friend' },
+// Array of TodoType objects for the todo list elements
+const todos = ref<TodoType[]>([
+  { id: 1, 
+    title: 'Buy groceries', 
+    description: 'Todo Description', 
+    status: 'Unchecked', 
+    priority: 'High' 
+  },
+  { id: 2, 
+    title: 'Clean the house', 
+    description: 'Todo Description', 
+    status: 'Unchecked', 
+    priority: 'High' 
+  },
+  { id: 3, 
+    title: 'Finish the report', 
+    description: 'Todo Description', 
+    status: 'Unchecked', 
+    priority: 'High' }
 ]);
+
 
 //Add function to add elements to existing array of todos
 function addTodo(inputValue: string) {
@@ -38,10 +52,16 @@ function addTodo(inputValue: string) {
     }
 
     //define the largest id in the todos array
-    const maxId = Math.max(...todos.value.map((todo: { id: number; text: string }) => todo.id));
+    const maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
 
     //add new todo element to list, position: maxId + 1
-    const newTodo = { id: maxId + 1, text: inputValue};
+    const newTodo: TodoType = { 
+      id: maxId + 1, 
+      title: inputValue, 
+      description: "Todo Description",
+      priority: "High",
+      status: "Unchecked"
+    };
 
     todos.value.push(newTodo);
     
