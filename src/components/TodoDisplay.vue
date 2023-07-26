@@ -1,10 +1,9 @@
 <template>
     <div class="container mx-auto text-center p-8 lg:w-[38rem]">
         <ul class="mt-5">
-            <li v-for="todo in props.todos" :key="todo.id">
+            <li v-for="todo in todos.slice().reverse()" :key="todo.id">
                 <TodoListElement
-                    :todoTitle="todo.title"
-                    :todoId="todo.id"
+                    :todos="todo"
                     @deleteTodo="removeTodo"
                 />
             </li>
@@ -23,7 +22,7 @@ interface Props {
     todos: TodoType[];
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 
 //Add emit to modify data in parent component

@@ -30,7 +30,13 @@ const todos = ref<TodoType[]>([]);
 function addTodo() {
     
     //define the largest id in the todos array
-    const maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
+    //as a starting point (when no todos are added to list) maxId = 0
+    let maxId = 0; 
+
+    if (todos.value.length !== 0) {
+      maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
+    } 
+    
 
     //add new todo element to list, position: maxId + 1
     const emptyTodo: TodoType = { 
