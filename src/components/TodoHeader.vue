@@ -18,7 +18,7 @@ import AddTodoButton from './AddTodoButton.vue'
 const emit = defineEmits(['addTodo'])
 
 function todoCreate() {
-    emit('addTodo', 'Title');
+    emit('addTodo');
 }
 
 </script>
