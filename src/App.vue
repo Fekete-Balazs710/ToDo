@@ -9,6 +9,7 @@
         @removeTodo="removeTodo"
         @toggleEditMode="toggleEditMode"
         @changeChecked="changeChecked"
+        @updatePriority="updatePriority"
       /> 
 
     <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
@@ -26,6 +27,7 @@ import Notodos from './components/NoTodos.vue';
 import { ref } from 'vue';
 
 import { TodoType } from './types/TodoType'
+import { OptionsType } from '../src/types/OptionsType'
 
 // Array of TodoType objects for the todo list elements
 const todos = ref<TodoType[]>([]);
@@ -99,6 +101,10 @@ function dateFormat(date: Date) {
 
 function changeChecked(todo: TodoType) {
   todo.isChecked = !todo.isChecked;
+}
+
+function updatePriority(todo: TodoType, option: OptionsType) {
+    todo.priority = option.name;
 }
 
 </script>

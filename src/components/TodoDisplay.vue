@@ -7,6 +7,7 @@
                     @removeTodo="removeTodo"
                     @toggleEditMode="toggleEditMode"
                     @changeChecked="changeChecked"
+                    @updatePriority="updatePriority"
                 />
             </li>
         </ul>
@@ -18,6 +19,7 @@
 import TodoListElement from './TodoListElement.vue';
 
 import { TodoType } from '../types/TodoType'
+import { OptionsType } from '../types/OptionsType'
 
 //Receive data from parent component
 interface Props {
@@ -29,7 +31,7 @@ defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['deleteTodo', 'toggleEditMode', 
-'allEditModeFalse', 'changeChecked', 'removeTodo'])
+'allEditModeFalse', 'changeChecked', 'removeTodo', 'updatePriority'])
 
 function toggleEditMode(todo: TodoType) {
     emit('toggleEditMode', todo)
@@ -41,6 +43,10 @@ function changeChecked(todo: TodoType) {
 
 function removeTodo(todo: TodoType) {
     emit('removeTodo', todo);
+}
+
+function updatePriority(todo: TodoType, option: OptionsType) {
+    emit('updatePriority', todo, option)
 }
 
 </script>

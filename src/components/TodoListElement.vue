@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div class="col-span-1">
-                <TodoPriority />
+                <TodoPriority :todo="todo" @updatePriority="updatePriority"/>
             </div>
         </div>
 
@@ -44,8 +44,6 @@
                     @changeChecked="changeChecked"/>
             </div>
         </div>
-        
-        
 
         <div class="flex items-start" v-if="isEditing()">
             <TodoButton
@@ -76,6 +74,7 @@ import TodoPriority from './TodoPriority.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
 import TodoButton from './TodoButton.vue';
 import DateSvg from './DateSvg.vue';
+import { OptionsType } from '../types/OptionsType'
 
 import { TodoType } from '../types/TodoType'
 
@@ -91,7 +90,7 @@ function isEditing() {
 }
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['toggleEditMode', 'changeChecked', 'removeTodo'])
+const emit = defineEmits(['toggleEditMode', 'changeChecked', 'removeTodo', 'updatePriority'])
 
 function toggleEditMode(todo: TodoType) {
     emit('toggleEditMode', todo);
@@ -103,6 +102,10 @@ function changeChecked(todo: TodoType) {
 
 function removeTodo(todo: TodoType) {
     emit('removeTodo', todo);
+}
+
+function updatePriority(todo: TodoType, option: OptionsType) {
+    emit('updatePriority', todo, option)
 }
 
 </script>
