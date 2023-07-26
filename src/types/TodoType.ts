@@ -5,6 +5,7 @@ export interface TodoType {
     description: string, 
     priority: string,
     isChecked: boolean,
-    isEditing: boolean
+    isEditing: boolean,
+    date: string
   }
 

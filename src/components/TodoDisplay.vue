@@ -4,7 +4,9 @@
             <li v-for="todo in todos.slice().reverse()" :key="todo.id">
                 <TodoListElement
                     :todo="todo"
-                    @deleteTodo="removeTodo"
+                    @removeTodo="removeTodo"
+                    @toggleEditMode="toggleEditMode"
+                    @changeChecked="changeChecked"
                 />
             </li>
         </ul>
@@ -26,10 +28,19 @@ defineProps<Props>()
 
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['deleteTodo'])
+const emit = defineEmits(['deleteTodo', 'toggleEditMode', 
+'allEditModeFalse', 'changeChecked', 'removeTodo'])
 
-function removeTodo(todoId: number) {
-    emit('deleteTodo', todoId);
+function toggleEditMode(todo: TodoType) {
+    emit('toggleEditMode', todo)
+}
+
+function changeChecked(todo: TodoType) {
+  emit('changeChecked', todo)
+}
+
+function removeTodo(todo: TodoType) {
+    emit('removeTodo', todo);
 }
 
 </script>

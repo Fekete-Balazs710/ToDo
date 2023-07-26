@@ -4,7 +4,12 @@
 
       <Notodos v-if="!todos.length"/>
       
-      <TodoDisplay v-else :todos="todos" @deleteTodo="removeTodo"/> 
+      <TodoDisplay
+        v-else :todos="todos"
+        @removeTodo="removeTodo"
+        @toggleEditMode="toggleEditMode"
+        @changeChecked="changeChecked"
+      /> 
 
     <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
   </div> 
@@ -45,7 +50,8 @@ function addTodo() {
       description: "Todo Description",
       priority: "High",
       isChecked: false,
-      isEditing: false
+      isEditing: false,
+      date: dateFormat(new Date())
     };
 
     todos.value.push(emptyTodo);
@@ -53,7 +59,8 @@ function addTodo() {
   }
 
 //Delete function to remove elements from todos array
-function removeTodo(todoId: number) {
+function removeTodo(todo: TodoType) {
+  const todoId = todo.id;
   const index = todos.value.findIndex(todo => todo.id === todoId);
   if (index == -1) {
     return
@@ -69,6 +76,30 @@ function removeTodo(todoId: number) {
 function clearTodo() {
     todos.value = [];
 }  
+
+function toggleEditMode(todo: TodoType) {
+    if(!todo.isEditing) {
+      todos.value.forEach((todo: TodoType) => {
+        todo.isEditing = false;
+      });
+    }
+
+    todo.isEditing = !todo.isEditing;
+}
+
+function dateFormat(date: Date) {
+  const formattedDate = date.toLocaleDateString('en', {
+  year: 'numeric',
+  month: '2-digit',
+  day: 'numeric',
+  }).replace(/\//g, '.');
+
+  return formattedDate;
+}
+
+function changeChecked(todo: TodoType) {
+  todo.isChecked = !todo.isChecked;
+}
 
 </script>
 

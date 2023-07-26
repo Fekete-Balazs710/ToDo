@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@vueuse/components": "^10.2.1",
+    "@vueuse/core": "^10.2.1",
     "vue": "^3.3.4"
   },
   "devDependencies": {
