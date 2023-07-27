@@ -1,4 +1,10 @@
 <template> 
+    <ConfirmDelete 
+        v-if="showingModal" 
+        :todo="todo"
+        @deleteTodo="deleteTodo"
+        @closeModal="closeModal"
+    />
     <div class="container p-5 border-2 border-black rounded-2xl mt-8"
          @click="toggleEditMode(todo)"
     >
@@ -59,7 +65,7 @@
                 color="gray"
                 type="submit"
                 class="ml-3"
-                @click="removeTodo(todo)"
+                @click="activateModal"
             >
             </TodoButton>
         </div>
@@ -74,13 +80,18 @@ import TodoPriority from './TodoPriority.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
 import TodoButton from './TodoButton.vue';
 import DateSvg from './DateSvg.vue';
+import ConfirmDelete from './ConfirmDelete.vue';
+
 import { OptionsType } from '../types/OptionsType'
 
 import { TodoType } from '../types/TodoType'
 
+import { ref } from 'vue';
+
 //Receive data from parent component
 interface Props {
     todo: TodoType;
+    showingModal: boolean;
 }
 
 const props = defineProps<Props>()
@@ -90,7 +101,8 @@ function isEditing() {
 }
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['toggleEditMode', 'changeChecked', 'removeTodo', 'updatePriority'])
+const emit = defineEmits(['toggleEditMode', 'changeChecked', 'removeTodo', 
+                          'updatePriority', 'deleteTodo'])
 
 function toggleEditMode(todo: TodoType) {
     emit('toggleEditMode', todo);
@@ -100,12 +112,22 @@ function changeChecked(todo: TodoType) {
   emit('changeChecked', todo)
 }
 
-function removeTodo(todo: TodoType) {
-    emit('removeTodo', todo);
-}
-
 function updatePriority(todo: TodoType, option: OptionsType) {
     emit('updatePriority', todo, option)
+}
+
+const showingModal = ref<boolean>(false);
+
+function activateModal() {
+    showingModal.value = true;
+}
+
+function deleteTodo(todo: TodoType) {
+    emit('deleteTodo', todo)
+}
+
+function closeModal() {
+    showingModal.value = false;
 }
 
 </script>

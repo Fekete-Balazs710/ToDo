@@ -4,10 +4,12 @@
             <li v-for="todo in todos.slice().reverse()" :key="todo.id">
                 <TodoListElement
                     :todo="todo"
+                    :showingModal="showingModal"
                     @removeTodo="removeTodo"
                     @toggleEditMode="toggleEditMode"
                     @changeChecked="changeChecked"
                     @updatePriority="updatePriority"
+                    @deleteTodo="deleteTodo"
                 />
             </li>
         </ul>
@@ -24,14 +26,16 @@ import { OptionsType } from '../types/OptionsType'
 //Receive data from parent component
 interface Props {
     todos: TodoType[];
+    showingModal: boolean;
 }
 
 defineProps<Props>()
 
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['deleteTodo', 'toggleEditMode', 
-'allEditModeFalse', 'changeChecked', 'removeTodo', 'updatePriority'])
+const emit = defineEmits(['deleteTodo', 'toggleEditMode', 'allEditModeFalse', 
+                          'changeChecked', 'removeTodo', 'updatePriority',
+                          'deleteTodo'])
 
 function toggleEditMode(todo: TodoType) {
     emit('toggleEditMode', todo)
@@ -47,6 +51,10 @@ function removeTodo(todo: TodoType) {
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     emit('updatePriority', todo, option)
+}
+
+function deleteTodo(todo: TodoType) {
+    emit('deleteTodo', todo)
 }
 
 </script>

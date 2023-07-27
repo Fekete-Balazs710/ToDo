@@ -6,13 +6,17 @@
       
       <TodoDisplay
         v-else :todos="todos"
-        @removeTodo="removeTodo"
+        :showingModal="showingModal"
         @toggleEditMode="toggleEditMode"
         @changeChecked="changeChecked"
         @updatePriority="updatePriority"
+        @deleteTodo="deleteTodo"
       /> 
 
+      
+
     <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
+
   </div> 
 
 </template>
@@ -23,6 +27,7 @@ import TodoHeader from './components/TodoHeader.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
+
 
 import { ref } from 'vue';
 
@@ -60,8 +65,11 @@ function addTodo() {
     
   }
 
+let showingModal = false;
+
 //Delete function to remove elements from todos array
-function removeTodo(todo: TodoType) {
+function deleteTodo(todo: TodoType) {
+ 
   const todoId = todo.id;
   const index = todos.value.findIndex(todo => todo.id === todoId);
   if (index == -1) {
@@ -72,7 +80,8 @@ function removeTodo(todo: TodoType) {
 
   // Updating the todos array to trigger reactivity
   todos.value = todos.value.slice();
-  
+
+  showingModal = false;
 }
 
 function clearTodo() {
