@@ -1,6 +1,8 @@
 <template>
+    <TodoAccount :username="'Kovacs Roland'"/>
+
     <div class="container mx-auto text-center p-8 flex items-center justify-between lg:w-[40rem] w-min-[20rem]">
-        
+
         <h1 class="lg:text-7xl sm:text-6xl text-4xl font-primary font-semibold text-black">
             To do list
         </h1>
@@ -13,6 +15,7 @@
 <script setup lang="ts">
 
 import AddTodoButton from './AddTodoButton.vue'
+import TodoAccount from './TodoAccount.vue';
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['addTodo'])

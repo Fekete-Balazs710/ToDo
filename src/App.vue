@@ -84,9 +84,11 @@ function toggleEditMode(todo: TodoType) {
       todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
       });
+      todo.isEditing = !todo.isEditing;
+    } else {
+      todo.isEditing = true;
     }
 
-    todo.isEditing = !todo.isEditing;
 }
 
 function dateFormat(date: Date) {

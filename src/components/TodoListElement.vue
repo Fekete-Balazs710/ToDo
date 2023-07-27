@@ -1,6 +1,6 @@
 <template> 
     <div class="container p-5 border-2 border-black rounded-2xl mt-8"
-         @dblclick="toggleEditMode(todo)"
+         @click="toggleEditMode(todo)"
     >
         <div class="grid grid-rows-1 grid-flow-col gap-4 justify-between">
             <div class="row-span-3">
@@ -45,7 +45,7 @@
             </div>
         </div>
 
-        <div class="flex items-start" v-if="isEditing()">
+        <div class="flex items-start mt-5 " v-if="isEditing()">
             <TodoButton
                 button-title="Save"
                 color="green"
