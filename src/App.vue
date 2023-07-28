@@ -13,6 +13,8 @@
       @updatePriority="updatePriority"
       @deleteTodo="deleteTodo"
       @closeEditMode="closeEditMode"
+      @moveToLast="moveToLast"
+      @moveToStart="moveToStart"
     /> 
 
     <TodoForm 
@@ -117,6 +119,38 @@ function toggleTodoCheckedState (todo: TodoType) {
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     todo.priority = option.name;
+}
+
+function moveToLast(todo: TodoType) {
+  const index = todos.value.findIndex((t) => t.id === todo.id);
+  if (index !== -1) {
+
+    setTimeout(() => { 
+      todos.value.splice(index, 1)
+      todos.value.unshift(todo);
+    }, 500)
+
+    todos.value.forEach((todo: TodoType) => {
+        todo.isEditing = false;
+      });
+
+  }
+}
+
+function moveToStart(todo: TodoType) {
+  const index = todos.value.findIndex((t) => t.id === todo.id);
+  if (index !== -1) {
+
+    setTimeout(() => { 
+      todos.value.splice(index, 1)
+      todos.value.push(todo);
+    }, 500)
+
+    todos.value.forEach((todo: TodoType) => {
+        todo.isEditing = false;
+      });
+
+  }
 }
 
 </script>

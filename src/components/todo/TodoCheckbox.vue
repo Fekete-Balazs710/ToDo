@@ -32,10 +32,23 @@ interface Props {
 }
 defineProps<Props>()
 
-const emit = defineEmits(['toggleTodoCheckedState'])
+const emit = defineEmits(['toggleTodoCheckedState', 'moveToLast', 'moveToStart'])
 
 function toggleTodoCheckedState(todo: TodoType) {
   emit('toggleTodoCheckedState', todo)
+  if(todo.isChecked) {
+    moveToLast(todo)
+  } else {
+    moveToStart(todo)
+  }
+}
+
+function moveToLast(todo: TodoType) {
+  emit('moveToLast', todo)
+}
+
+function moveToStart(todo: TodoType) {
+  emit('moveToStart', todo)
 }
 
 </script>

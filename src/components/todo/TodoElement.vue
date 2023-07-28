@@ -6,7 +6,8 @@
         @closeModal="closeModal"
     >
     </ConfirmDelete>
-    <div class="container p-5 border-2 border-black rounded-2xl mt-8"
+    <div class="container p-5 border-2 border-black rounded-2xl mt-8
+                transform hover:scale-105 ease-out duration-300"
          @click="toggleEditMode(todo.id)"
     >
     <div class="flex sm:grid justify-between sm:justify-normal">
@@ -18,6 +19,8 @@
                     :todo="todo"
                     stroke="black"
                     @toggleTodoCheckedState="toggleTodoCheckedState"
+                    @moveToLast="moveToLast"
+                    @moveToStart="moveToStart"
                 >
                 </TodoCheckbox>
             </div>
@@ -64,6 +67,8 @@
                     :todo="todo"
                     stroke="black"
                     @toggleTodoCheckedState="toggleTodoCheckedState"
+                    @moveToLast="moveToLast"
+                    @moveToStart="moveToStart"
                 >
                 </TodoCheckbox>
             </div>
@@ -131,12 +136,13 @@ const props = defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
-                          'updatePriority', 'deleteTodo', 'closeEditMode'])
+                          'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToStart',
+                          'moveToLast'])
 
 const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
 
 function toggleEditMode(id: number) {
-    emit('toggleEditMode', id);
+    emit('toggleEditMode', id); 
 }
 
 function toggleTodoCheckedState(todo: TodoType) {
@@ -163,6 +169,14 @@ function closeModal() {
 
 function closeEditMode(todo: TodoType) {
     emit('closeEditMode', todo)
+}
+
+function moveToLast(todo: TodoType) {
+    emit('moveToLast', todo)
+}
+
+function moveToStart(todo: TodoType) {
+    emit('moveToStart', todo)
 }
 
 </script>
