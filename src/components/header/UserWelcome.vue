@@ -6,13 +6,16 @@
         <p class="text-left text-base font-medium">
             Welcome <br> {{ username }}
         </p>
-        <TodoButton :buttonTitle="'Logout'" :color="'gray'"></TodoButton>
+        <BaseButton 
+            buttonTitle="Logout" 
+            color="gray">
+        </BaseButton>
     </div>
 </template>
 
 <script setup lang="ts">
 
-import TodoButton from './TodoButton.vue';
+import BaseButton from '../base-components/BaseButton.vue';
 
 //Receive data from parent component
 interface Props {

@@ -1,21 +1,25 @@
 <template>
   <div>
-    <TodoHeader @addTodo="addTodo"/>
+    <Header @addTodo="addTodo" />
 
-      <Notodos v-if="!todos.length"/>
-      
-      <TodoDisplay
-        v-else :todos="todos"
-        :showingModal="showingModal"
-        @toggleEditMode="toggleEditMode"
-        @changeChecked="changeChecked"
-        @updatePriority="updatePriority"
-        @deleteTodo="deleteTodo"
-      /> 
+    <Notodos v-if="!todos.length"/>
+    
+    <TodoDisplay
+      v-else
+      :todos="todos" 
+      :isShowingModal="isShowingModal"
+      @toggleEditMode="toggleEditMode"
+      @toggleTodoCheckedState="toggleTodoCheckedState"
+      @updatePriority="updatePriority"
+      @deleteTodo="deleteTodo"
+      @closeEditMode="closeEditMode"
+    /> 
 
-      
-
-    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
+    <TodoForm 
+      :todos="todos"
+      @clearTodo="clearTodo" 
+      @addTodo="addTodo"
+    />
 
   </div> 
 
@@ -23,13 +27,12 @@
 
 <script setup lang="ts">
 
-import TodoHeader from './components/TodoHeader.vue';
+import { ref } from 'vue';
+
+import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
-
-
-import { ref } from 'vue';
 
 import { TodoType } from './types/TodoType'
 import { OptionsType } from '../src/types/OptionsType'
@@ -65,7 +68,7 @@ function addTodo() {
     
   }
 
-let showingModal = false;
+  const isShowingModal = ref<boolean>(false);
 
 //Delete function to remove elements from todos array
 function deleteTodo(todo: TodoType) {
@@ -81,23 +84,21 @@ function deleteTodo(todo: TodoType) {
   // Updating the todos array to trigger reactivity
   todos.value = todos.value.slice();
 
-  showingModal = false;
+  isShowingModal.value = false;
 }
 
 function clearTodo() {
     todos.value = [];
 }  
 
-function toggleEditMode(todo: TodoType) {
-    if(!todo.isEditing) {
-      todos.value.forEach((todo: TodoType) => {
-        todo.isEditing = false;
-      });
-      todo.isEditing = !todo.isEditing;
-    } else {
-      todo.isEditing = true;
-    }
+function toggleEditMode(id: number) {
+  todos.value.map((todo: TodoType) => {
+    todo.isEditing = (todo.id === id)
+  })
+}
 
+function closeEditMode(todo: TodoType) {
+  todo.isEditing = false;
 }
 
 function dateFormat(date: Date) {
@@ -110,7 +111,7 @@ function dateFormat(date: Date) {
   return formattedDate;
 }
 
-function changeChecked(todo: TodoType) {
+function toggleTodoCheckedState (todo: TodoType) {
   todo.isChecked = !todo.isChecked;
 }
 

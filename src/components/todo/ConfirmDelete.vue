@@ -1,6 +1,7 @@
 <template>
     <div
-        class="fixed z-50 bg-black top-0 left-0 w-full h-full bg-opacity-70"
+        class="fixed z-[100] bg-black top-0 left-0 w-full h-full 
+               bg-opacity-70 backdrop-blur"
     >
         <div class="w-96 p-8 bg-white mt-[100px] mx-auto rounded-2xl">
             <p class="text-black font-primary font-bold text-3xl">
@@ -10,14 +11,14 @@
                 This operation is permanent and you will not be able to undo this action.
             </p>
             <div class="mt-10">
-                <TodoButton 
-                    :button-title="'Delete'" 
-                    :color="'red'"
+                <BaseButton 
+                    button-title="Delete" 
+                    color="red"
                     @click="deleteTodo(todo)"
                 />
-                <TodoButton 
-                    :button-title="'Cancel'" 
-                    :color="'gray'"
+                <BaseButton 
+                    button-title="Cancel" 
+                    color="gray"
                     class="ml-3"
                     @click="closeModal()"
                 />
@@ -28,8 +29,8 @@
 
 <script setup lang="ts">
 
-import { TodoType } from '../types/TodoType';
-import TodoButton from './TodoButton.vue';
+import { TodoType } from '../../types/TodoType';
+import BaseButton from '../base-components/BaseButton.vue';
 
 
 //Receive data from parent component

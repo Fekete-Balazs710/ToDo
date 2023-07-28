@@ -1,16 +1,18 @@
 <template>
     <div class="container mx-auto text-center p-8 lg:w-[38rem]">
         <ul class="mt-5">
-            <li v-for="todo in todos.slice().reverse()" :key="todo.id">
-                <TodoListElement
+            <li v-for="todo in reversedTodos" :key="todo.id">
+                <TodoElement
                     :todo="todo"
-                    :showingModal="showingModal"
+                    :isShowingModal="isShowingModal"
                     @removeTodo="removeTodo"
                     @toggleEditMode="toggleEditMode"
-                    @changeChecked="changeChecked"
+                    @toggleTodoCheckedState="toggleTodoCheckedState"
                     @updatePriority="updatePriority"
                     @deleteTodo="deleteTodo"
-                />
+                    @closeEditMode="closeEditMode"
+                >
+                </TodoElement>
             </li>
         </ul>
     </div>
@@ -18,7 +20,9 @@
 
 <script setup lang="ts">
 
-import TodoListElement from './TodoListElement.vue';
+import { computed } from 'vue'
+
+import TodoElement from './todo/TodoElement.vue';
 
 import { TodoType } from '../types/TodoType'
 import { OptionsType } from '../types/OptionsType'
@@ -26,23 +30,26 @@ import { OptionsType } from '../types/OptionsType'
 //Receive data from parent component
 interface Props {
     todos: TodoType[];
-    showingModal: boolean;
+    isShowingModal: boolean;
 }
 
-defineProps<Props>()
-
+const props = defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['deleteTodo', 'toggleEditMode', 'allEditModeFalse', 
-                          'changeChecked', 'removeTodo', 'updatePriority',
-                          'deleteTodo'])
+                          'toggleTodoCheckedState', 'removeTodo', 'updatePriority',
+                          'deleteTodo', 'closeEditMode'])
 
-function toggleEditMode(todo: TodoType) {
-    emit('toggleEditMode', todo)
+const reversedTodos = computed(() => {
+    return props.todos.slice().reverse();
+});
+
+function toggleEditMode(id: number) {
+    emit('toggleEditMode', id)
 }
 
-function changeChecked(todo: TodoType) {
-  emit('changeChecked', todo)
+function toggleTodoCheckedState(todo: TodoType) {
+  emit('toggleTodoCheckedState', todo)
 }
 
 function removeTodo(todo: TodoType) {
@@ -55,6 +62,10 @@ function updatePriority(todo: TodoType, option: OptionsType) {
 
 function deleteTodo(todo: TodoType) {
     emit('deleteTodo', todo)
+}
+
+function closeEditMode(todo: TodoType) {
+    emit('closeEditMode', todo)
 }
 
 </script>

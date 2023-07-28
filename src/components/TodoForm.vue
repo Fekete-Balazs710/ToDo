@@ -1,29 +1,31 @@
 <template>
     <div class="container mx-auto text-center p-8">
       <form class="my-4" @submit.prevent="addTodo()">
-        <input type="text"
-               placeholder="Add todo element..."
-               class="p-5 shadow border rounded px-3"
-               v-model="inputValue"
-               required/>
+        <input 
+          type="text"
+          placeholder="Add todo element..."
+          class="p-5 shadow border rounded px-3"
+          v-model="inputValue"
+          required
+        />
         <br>
-        <TodoButton
+        <BaseButton
           button-title="Add to list"
           color="green"
           type="submit">
-        </TodoButton>
+        </BaseButton>
       </form>
 
-      <TodoButton 
+      <BaseButton 
         button-title="Clear"
         color="red"
         @click="clearTodo">
-      </TodoButton>
+      </BaseButton>
     </div>
   </template>
   
 <script setup lang="ts">
-  import TodoButton from './TodoButton.vue';
+  import BaseButton from './base-components/BaseButton.vue';
   import { ref } from 'vue';
   
   //Add emit to modify data in parent component

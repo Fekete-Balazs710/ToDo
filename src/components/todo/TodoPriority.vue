@@ -24,10 +24,10 @@
 <script setup lang="ts">
 
 import { ref } from "vue";
-import { OptionsType } from '../types/OptionsType'
-import { ColormapType } from '../types/ColormapType'
 
-import { TodoType } from '../types/TodoType'
+import { OptionsType } from '../../types/OptionsType'
+import { ColormapType } from '../../types/ColormapType'
+import { TodoType } from '../../types/TodoType'
 
 //Receive data from parent component
 interface Props {
@@ -53,12 +53,10 @@ const colorMap: ColormapType = {
 
 function updateColor(option: OptionsType) {
   selectedColor.value = colorMap[option.name];
-  console.log('Color updated with: ' , selectedColor.value)
 }
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     emit('UpdatePriority', todo, option)
-    // updateColor(option)
 }
 
 function toggleOptions() {
