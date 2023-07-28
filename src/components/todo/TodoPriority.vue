@@ -1,23 +1,31 @@
 <template>
     <div class="rounded-full text-white text-lg font-secondary
-            font-semibold h-9 flex justify-center items-center
-            w-32 border-0"
+            font-semibold flex justify-center items-center
+            sm:w-32 sm:h-9 border-0 w-5 h-5"
         :class="selectedColor"
         @click="toggleOptions"
     >
-        {{ todo.priority }}    
-    </div>
-    
-        <ul class=" text-black text-lg font-secondary
-            font-semibold text-left p-3 rounded-2xl mt-2
-            w-32 absolute z-50 bg-white border-2 border-black"
-            v-if="showingOptions"
-            @click="toggleOptions" 
+        <p
+            class="hidden sm:flex"
         >
-            <li v-for="option in optionsObj" @click="updatePriority(todo, option); updateColor(option)">
+            {{ todo.priority }} 
+        </p>   
+    </div>
+
+    <ul class=" text-black text-lg font-secondary
+        font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-1
+        w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
+        v-if="isShowingOptions"
+        @click="toggleOptions" 
+    >
+        <li 
+            class=""
+            v-for="option in optionsObj" 
+            @click="updatePriority(todo, option); updateColor(option)"
+        >
                 {{ option.name }}
-            </li>
-        </ul> 
+        </li>
+    </ul> 
     
 </template>
 
@@ -43,7 +51,7 @@ const emit = defineEmits(['UpdatePriority'])
 
 const selectedColor = ref("bg-[#FF481F]");
 
-const showingOptions = ref(false);
+const isShowingOptions = ref(false);
 
 const colorMap: ColormapType = {
   "High": 'bg-[#FF481F]' as const,
@@ -60,7 +68,7 @@ function updatePriority(todo: TodoType, option: OptionsType) {
 }
 
 function toggleOptions() {
-  showingOptions.value = !showingOptions.value; 
+  isShowingOptions.value = !isShowingOptions.value; 
 }
 
 const optionsObj: OptionsType[] = [

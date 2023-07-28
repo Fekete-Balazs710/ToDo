@@ -3,7 +3,7 @@
         class="fixed z-[100] bg-black top-0 left-0 w-full h-full 
                bg-opacity-70 backdrop-blur"
     >
-        <div class="w-96 p-8 bg-white mt-[100px] mx-auto rounded-2xl">
+        <div class="w-96 p-8 bg-white my-[120px] mx-auto rounded-2xl">
             <p class="text-black font-primary font-bold text-3xl">
                 Are you sure you want to delete this item?
             </p>

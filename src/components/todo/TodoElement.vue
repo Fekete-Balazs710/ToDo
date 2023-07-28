@@ -9,45 +9,10 @@
     <div class="container p-5 border-2 border-black rounded-2xl mt-8"
          @click="toggleEditMode(todo.id)"
     >
-        <div class="grid grid-rows-1 grid-flow-col gap-4 justify-between">
-            <div class="row-span-3">
-                <p
-                    class="text-black font-primary lg:text-4xl text-3xl
-                            font-semibold text-left"
-                    :contenteditable="todo.isEditing"
-                > 
-                    {{ todo.title }}
-                </p>
-                <div class="flex items-center">
-                    <DateIcon/>
-                    <p
-                        class="flex justify-start font-primary text-s font-normal
-                            text-[#333] ml-1 mt-1"
-                    >
-                        {{ todo.date }}
-                    </p>
-                </div>
-            </div>
-            <div class="col-span-1">
-                <TodoPriority
-                    :todo="todo"
-                    @updatePriority="updatePriority"
-                >
-                </TodoPriority>
-            </div>
-        </div>
-
-        <div class="grid grid-rows-1 grid-flow-col gap-0 justify-between mt-4">
-            <div class="row-span-2">
-                <p class="font-primary font-semibold md:text-1xl text-left"
-                   :class="{'text-black md:text-2xl text-lg': todo.isEditing,
-                            'text-[#757575]': !todo.isEditing}"
-                   :contenteditable="todo.isEditing"
-                >
-                    {{ todo.description }} 
-                </p>
-            </div>
-            <div class="col-span-1">
+    <div class="flex sm:grid justify-between sm:justify-normal">
+        <div class="sm:grid sm:grid-rows-1 sm:grid-flow-col gap-4 justify-between
+                    flex items-center">
+            <div class="col-span-1 sm:hidden">
                 <TodoCheckbox 
                     v-if="!todo.isEditing" 
                     :todo="todo"
@@ -56,9 +21,72 @@
                 >
                 </TodoCheckbox>
             </div>
+            <div class="sm:row-span-3">
+                <p
+                    class="text-black font-primary lg:text-4xl text-3xl
+                            font-semibold text-left"
+                    :contenteditable="todo.isEditing"
+                > 
+                    {{ todo.title }}
+                </p>
+                <div class="flex items-center">
+                    <DateIcon class="hidden sm:flex"></DateIcon>
+                    <p
+                        class="flex justify-start font-primary text-s font-normal
+                            text-[#333] ml-1 mt-1"
+                    >
+                        {{ todo.date }}
+                    </p>
+                </div>
+                
+            </div>
+            <div class="col-span-1 hidden sm:flex">
+                <TodoPriority
+                    :todo="todo"
+                    @updatePriority="updatePriority"
+                >
+                </TodoPriority>
+            </div>
         </div>
 
-        <div class="flex items-start mt-5 " v-if="todo.isEditing">
+        <div class="sm:grid grid-rows-1 grid-flow-col gap-0 justify-between sm:mt-4 flex items-center">
+            <div class="row-span-2 hidden sm:flex">
+                <p class="font-primary font-semibold md:text-1xl text-left"
+                   :class="{'text-black md:text-2xl text-lg': todo.isEditing,
+                            'text-[#757575]': !todo.isEditing}"
+                   :contenteditable="todo.isEditing"
+                >
+                    {{ todo.description }} 
+                </p>
+            </div>
+            <div class="col-span-1 hidden sm:flex">
+                <TodoCheckbox 
+                    v-if="!todo.isEditing" 
+                    :todo="todo"
+                    stroke="black"
+                    @toggleTodoCheckedState="toggleTodoCheckedState"
+                >
+                </TodoCheckbox>
+            </div>
+            <div class="col-span-1 sm:hidden">
+                <TodoPriority
+                    :todo="todo"
+                    @updatePriority="updatePriority"
+                >
+                </TodoPriority>
+            </div>
+        </div>
+    </div>
+        <div class="flex items-start p-5" v-if="todo.isEditing">
+            <div class="sm:hidden" :class="{'hidden': !todo.isEditing}">
+                <p class="font-primary font-medium text-left text-[#757575]"
+                :contenteditable="todo.isEditing"
+                >
+                    {{ todo.description }} 
+                </p>
+            </div>
+        </div>
+        <div class="flex items-start p-5" v-if="todo.isEditing">
             <BaseButton
                 button-title="Save"
                 color="green"

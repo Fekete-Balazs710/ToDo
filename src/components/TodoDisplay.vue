@@ -40,9 +40,7 @@ const emit = defineEmits(['deleteTodo', 'toggleEditMode', 'allEditModeFalse',
                           'toggleTodoCheckedState', 'removeTodo', 'updatePriority',
                           'deleteTodo', 'closeEditMode'])
 
-const reversedTodos = computed(() => {
-    return props.todos.slice().reverse();
-});
+const reversedTodos = computed(() => props.todos.slice().reverse());
 
 function toggleEditMode(id: number) {
     emit('toggleEditMode', id)

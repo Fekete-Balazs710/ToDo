@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header @addTodo="addTodo" />
+    <Header @addTodo="addTodo"></Header>
 
     <Notodos v-if="!todos.length"/>
     
@@ -19,7 +19,7 @@
       :todos="todos"
       @clearTodo="clearTodo" 
       @addTodo="addTodo"
-    />
+    /> 
 
   </div> 
 
