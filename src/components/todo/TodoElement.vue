@@ -133,12 +133,7 @@ const props = defineProps<Props>()
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
                           'updatePriority', 'deleteTodo', 'closeEditMode'])
 
-const todoDescriptionStyle = computed(() => {
-    return {
-        'text-black md:text-2xl': props.todo.isEditing,
-        'text-[#757575] text-xl': !props.todo.isEditing,
-    };
-});
+const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
 
 function toggleEditMode(id: number) {
     emit('toggleEditMode', id);
