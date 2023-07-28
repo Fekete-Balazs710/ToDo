@@ -52,8 +52,7 @@
         <div class="sm:grid grid-rows-1 grid-flow-col gap-0 justify-between sm:mt-4 flex items-center">
             <div class="row-span-2 hidden sm:flex">
                 <p class="font-primary font-semibold md:text-1xl text-left"
-                   :class="{'text-black md:text-2xl text-lg': todo.isEditing,
-                            'text-[#757575]': !todo.isEditing}"
+                   :class="todoDescriptionStyle"
                    :contenteditable="todo.isEditing"
                 >
                     {{ todo.description }} 
@@ -77,8 +76,8 @@
             </div>
         </div>
     </div>
-        <div class="flex items-start p-5" v-if="todo.isEditing">
-            <div class="sm:hidden" :class="{'hidden': !todo.isEditing}">
+        <div v-if="todo.isEditing" class="flex items-start p-5">
+            <div class="sm:hidden">
                 <p class="font-primary font-medium text-left text-[#757575]"
                 :contenteditable="todo.isEditing"
                 >
@@ -86,21 +85,20 @@
                 </p>
             </div>
         </div>
-        <div class="flex items-start p-5" v-if="todo.isEditing">
+        <div v-if="todo.isEditing" class="flex items-start p-5">
             <BaseButton
                 button-title="Save"
                 color="green"
                 type="submit"
-                class=""
                 @click.stop="closeEditMode(todo)"
             >
             </BaseButton>
 
             <BaseButton
+                class="ml-3"
                 button-title="Delete"
                 color="gray"
                 type="submit"
-                class="ml-3"
                 @click="activateModal"
             >
             </BaseButton>
@@ -112,7 +110,7 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import TodoPriority from './TodoPriority.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
@@ -129,11 +127,18 @@ interface Props {
     isShowingModal: boolean;
 }
 
-defineProps<Props>()
+const props = defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
                           'updatePriority', 'deleteTodo', 'closeEditMode'])
+
+const todoDescriptionStyle = computed(() => {
+    return {
+        'text-black md:text-2xl': props.todo.isEditing,
+        'text-[#757575] text-xl': !props.todo.isEditing,
+    };
+});
 
 function toggleEditMode(id: number) {
     emit('toggleEditMode', id);

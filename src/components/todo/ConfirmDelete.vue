@@ -17,9 +17,9 @@
                     @click="deleteTodo(todo)"
                 />
                 <BaseButton 
+                    class="ml-3"
                     button-title="Cancel" 
                     color="gray"
-                    class="ml-3"
                     @click="closeModal()"
                 />
             </div>

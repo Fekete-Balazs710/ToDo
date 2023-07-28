@@ -12,16 +12,16 @@
         </p>   
     </div>
 
-    <ul class=" text-black text-lg font-secondary
-        font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-1
-        w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
+    <ul 
         v-if="isShowingOptions"
+        class=" text-black text-lg font-secondary
+                 font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-1
+                w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
         @click="toggleOptions" 
     >
         <li 
-            class=""
             v-for="option in optionsObj" 
-            @click="updatePriority(todo, option); updateColor(option)"
+            @click="updatePriorityColor(todo, option)"
         >
                 {{ option.name }}
         </li>
@@ -69,6 +69,11 @@ function updatePriority(todo: TodoType, option: OptionsType) {
 
 function toggleOptions() {
   isShowingOptions.value = !isShowingOptions.value; 
+}
+
+function updatePriorityColor(todo: TodoType, option: OptionsType) {
+    updatePriority(todo, option); 
+    updateColor(option)
 }
 
 const optionsObj: OptionsType[] = [
