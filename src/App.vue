@@ -1,74 +1,79 @@
 <template>
   <div>
-    <TodoHeader @addTodo="addTodo"/>
+    <Header @addTodo="addTodo"></Header>
 
-      <Notodos v-if="!todos.length"/>
-      
-      <TodoDisplay v-else :todos="todos" @deleteTodo="removeTodo"/> 
+    <Notodos v-if="!todos.length"/>
+    
+    <TodoDisplay
+      v-else
+      :todos="todos" 
+      :isShowingModal="isShowingModal"
+      @toggleEditMode="toggleEditMode"
+      @toggleTodoCheckedState="toggleTodoCheckedState"
+      @updatePriority="updatePriority"
+      @deleteTodo="deleteTodo"
+      @closeEditMode="closeEditMode"
+    /> 
 
-    <TodoForm :todos="todos" @clearTodo="clearTodo" @addTodo="addTodo"/>
+    <TodoForm 
+      :todos="todos"
+      @clearTodo="clearTodo" 
+      @addTodo="addTodo"
+    /> 
+
   </div> 
 
 </template>
 
 <script setup lang="ts">
 
-import TodoHeader from './components/TodoHeader.vue';
+import { ref } from 'vue';
+
+import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
 
-import { ref } from 'vue';
-
 import { TodoType } from './types/TodoType'
+import { OptionsType } from '../src/types/OptionsType'
 
 // Array of TodoType objects for the todo list elements
-const todos = ref<TodoType[]>([
-  { id: 1, 
-    title: 'Buy groceries', 
-    description: 'Todo Description', 
-    status: 'Unchecked', 
-    priority: 'High' 
-  },
-  { id: 2, 
-    title: 'Clean the house', 
-    description: 'Todo Description', 
-    status: 'Unchecked', 
-    priority: 'High' 
-  },
-  { id: 3, 
-    title: 'Finish the report', 
-    description: 'Todo Description', 
-    status: 'Unchecked', 
-    priority: 'High' }
-]);
+const todos = ref<TodoType[]>([]);
 
 
 //Add function to add elements to existing array of todos
-function addTodo(inputValue: string) {
+function addTodo() {
     
-    if (!inputValue) {
-      return;
-    }
-
     //define the largest id in the todos array
-    const maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
+    //as a starting point (when no todos are added to list) maxId = 0
+    let maxId = 0; 
+
+    if (todos.value.length !== 0) {
+      maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
+    } 
+    
 
     //add new todo element to list, position: maxId + 1
-    const newTodo: TodoType = { 
+    const emptyTodo: TodoType = { 
       id: maxId + 1, 
-      title: inputValue, 
+      title: "Title", 
       description: "Todo Description",
       priority: "High",
-      status: "Unchecked"
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
     };
 
-    todos.value.push(newTodo);
+    todos.value.push(emptyTodo);
     
   }
 
+  const isShowingModal = ref<boolean>(false);
+
 //Delete function to remove elements from todos array
-function removeTodo(todoId: number) {
+function deleteTodo(todo: TodoType) {
+ 
+  const todoId = todo.id;
   const index = todos.value.findIndex(todo => todo.id === todoId);
   if (index == -1) {
     return
@@ -78,12 +83,41 @@ function removeTodo(todoId: number) {
 
   // Updating the todos array to trigger reactivity
   todos.value = todos.value.slice();
-  
+
+  isShowingModal.value = false;
 }
 
 function clearTodo() {
     todos.value = [];
 }  
+
+function toggleEditMode(id: number) {
+  todos.value.map((todo: TodoType) => {
+    todo.isEditing = (todo.id === id)
+  })
+}
+
+function closeEditMode(todo: TodoType) {
+  todo.isEditing = false;
+}
+
+function dateFormat(date: Date) {
+  const formattedDate = date.toLocaleDateString('en', {
+  year: 'numeric',
+  month: '2-digit',
+  day: 'numeric',
+  }).replace(/\//g, '.');
+
+  return formattedDate;
+}
+
+function toggleTodoCheckedState (todo: TodoType) {
+  todo.isChecked = !todo.isChecked;
+}
+
+function updatePriority(todo: TodoType, option: OptionsType) {
+    todo.priority = option.name;
+}
 
 </script>
 
