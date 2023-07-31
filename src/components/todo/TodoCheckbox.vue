@@ -1,12 +1,13 @@
 <template>
   <CircleCheckIcon
     v-if="!todo.isChecked"
+    class="cursor-pointer"
     stroke="#4FDA9B"
     @click.stop="toggleTodoCheckedState(todo)"
   >
   </CircleCheckIcon>
 
-  <div v-else class="flex flex-col items-center justify-center relative">
+  <div v-else class="flex flex-col items-center justify-center relative cursor-pointer">
     <CheckedIcon 
       class="z-30 absolute bottom-1 left-0.5" 
       @click.stop="toggleTodoCheckedState(todo)" 
@@ -32,23 +33,15 @@ interface Props {
 }
 defineProps<Props>()
 
-const emit = defineEmits(['toggleTodoCheckedState', 'moveToLast', 'moveToStart'])
+const emit = defineEmits(['toggleTodoCheckedState', 'moveToPosition'])
 
 function toggleTodoCheckedState(todo: TodoType) {
   emit('toggleTodoCheckedState', todo)
-  if(todo.isChecked) {
-    moveToLast(todo)
-  } else {
-    moveToStart(todo)
-  }
+  moveToPosition(todo)
 }
 
-function moveToLast(todo: TodoType) {
-  emit('moveToLast', todo)
-}
-
-function moveToStart(todo: TodoType) {
-  emit('moveToStart', todo)
+function moveToPosition(todo: TodoType) {
+  emit('moveToPosition', todo)
 }
 
 </script>

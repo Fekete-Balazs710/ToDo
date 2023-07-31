@@ -19,8 +19,7 @@
                     :todo="todo"
                     stroke="black"
                     @toggleTodoCheckedState="toggleTodoCheckedState"
-                    @moveToLast="moveToLast"
-                    @moveToStart="moveToStart"
+                    @moveToPosition="moveToPosition"
                 >
                 </TodoCheckbox>
             </div>
@@ -67,8 +66,7 @@
                     :todo="todo"
                     stroke="black"
                     @toggleTodoCheckedState="toggleTodoCheckedState"
-                    @moveToLast="moveToLast"
-                    @moveToStart="moveToStart"
+                    @moveToPosition="moveToPosition"
                 >
                 </TodoCheckbox>
             </div>
@@ -136,8 +134,7 @@ const props = defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
-                          'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToStart',
-                          'moveToLast'])
+                          'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToPosition'])
 
 const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
 
@@ -171,12 +168,8 @@ function closeEditMode(todo: TodoType) {
     emit('closeEditMode', todo)
 }
 
-function moveToLast(todo: TodoType) {
-    emit('moveToLast', todo)
-}
-
-function moveToStart(todo: TodoType) {
-    emit('moveToStart', todo)
+function moveToPosition(todo: TodoType) {
+    emit('moveToPosition', todo)
 }
 
 </script>

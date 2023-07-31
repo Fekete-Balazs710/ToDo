@@ -13,11 +13,11 @@
       @updatePriority="updatePriority"
       @deleteTodo="deleteTodo"
       @closeEditMode="closeEditMode"
-      @moveToLast="moveToLast"
-      @moveToStart="moveToStart"
+      @moveToPosition="moveToPosition"
     /> 
 
     <TodoForm 
+      class="hidden"
       :todos="todos"
       @clearTodo="clearTodo" 
       @addTodo="addTodo"
@@ -105,9 +105,9 @@ function closeEditMode(todo: TodoType) {
 
 function dateFormat(date: Date) {
   const formattedDate = date.toLocaleDateString('en', {
-  year: 'numeric',
-  month: '2-digit',
-  day: 'numeric',
+    year: 'numeric',
+    month: '2-digit',
+    day: 'numeric',
   }).replace(/\//g, '.');
 
   return formattedDate;
@@ -121,36 +121,20 @@ function updatePriority(todo: TodoType, option: OptionsType) {
     todo.priority = option.name;
 }
 
-function moveToLast(todo: TodoType) {
+function moveToPosition(todo: TodoType) {
   const index = todos.value.findIndex((t) => t.id === todo.id);
-  if (index !== -1) {
 
-    setTimeout(() => { 
-      todos.value.splice(index, 1)
-      todos.value.unshift(todo);
-    }, 500)
-
-    todos.value.forEach((todo: TodoType) => {
-        todo.isEditing = false;
-      });
-
+  if (index === -1) {
+    return;
   }
-}
 
-function moveToStart(todo: TodoType) {
-  const index = todos.value.findIndex((t) => t.id === todo.id);
-  if (index !== -1) {
+  todos.value.splice(index, 1)
+  
+  todo.isChecked ? todos.value.unshift(todo) : todos.value.push(todo)
 
-    setTimeout(() => { 
-      todos.value.splice(index, 1)
-      todos.value.push(todo);
-    }, 500)
-
-    todos.value.forEach((todo: TodoType) => {
+  todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
-      });
-
-  }
+  });
 }
 
 </script>
