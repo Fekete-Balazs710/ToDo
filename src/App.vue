@@ -1,6 +1,11 @@
 <template>
   <div>
-    <Header @addTodo="addTodo"></Header>
+    <Header 
+      :todos="todos"
+      @addTodo="addTodo"
+      @onFilterTodos="filterTodos" 
+    >
+    </Header>
 
     <Notodos v-if="!todos.length"/>
     
@@ -129,13 +134,67 @@ function moveToPosition(todo: TodoType) {
   }
 
   todos.value.splice(index, 1)
-  
+
   todo.isChecked ? todos.value.unshift(todo) : todos.value.push(todo)
 
   todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
   });
 }
+
+
+function filterTodos(searchValue: string) {
+  search.value = searchValue
+}
+
+const search = ref("")
+
+
+const todosimple1: TodoType = {
+      id: 888, 
+      title: "Make dinner", 
+      description: "Lorem ipsum dolor sit amet",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple2: TodoType = {
+      id: 943, 
+      title: "Call a friend", 
+      description: "Consectetur adipiscing elit",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple3: TodoType = {
+      id: 999, 
+      title: "Clean the house", 
+      description: "Suspendisse lectus tortor",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple4: TodoType = {
+      id: 978, 
+      title: "Pc setup", 
+      description: "Cras elementum ultrices diam",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+todos.value.push(todosimple1);
+todos.value.push(todosimple2);
+todos.value.push(todosimple3);
+todos.value.push(todosimple4);
+
 
 </script>
 
