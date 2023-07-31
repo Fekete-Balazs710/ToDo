@@ -11,7 +11,7 @@
     
     <TodoDisplay
       v-else
-      :todos="todos" 
+      :todos="filteredTodos" 
       :isShowingModal="isShowingModal"
       @toggleEditMode="toggleEditMode"
       @toggleTodoCheckedState="toggleTodoCheckedState"
@@ -20,6 +20,12 @@
       @closeEditMode="closeEditMode"
       @moveToPosition="moveToPosition"
     /> 
+
+    <NoTodosFound
+      v-if="!filteredTodos.length"
+    >
+
+    </NoTodosFound>
 
     <TodoForm 
       class="hidden"
@@ -34,12 +40,13 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
+import NoTodosFound from './components/todo/NoTodosFound.vue';
 
 import { TodoType } from './types/TodoType'
 import { OptionsType } from '../src/types/OptionsType'
@@ -149,6 +156,14 @@ function filterTodos(searchValue: string) {
 
 const search = ref("")
 
+const filteredTodos = computed(() => 
+   todos.value.filter((todo: TodoType) => 
+       search.value
+            .toLowerCase()
+            .split(" ")
+            .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
+    )
+)
 
 const todosimple1: TodoType = {
       id: 888, 
