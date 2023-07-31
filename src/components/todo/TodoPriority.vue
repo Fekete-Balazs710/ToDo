@@ -1,7 +1,7 @@
 <template>
     <div class="rounded-full text-white text-lg font-secondary
-            font-semibold flex justify-center items-center
-            sm:w-32 sm:h-9 border-0 w-5 h-5"
+                font-semibold flex justify-center items-center
+                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer"
         :class="selectedColor"
         @click="toggleOptions"
     >
@@ -14,9 +14,9 @@
 
     <ul 
         v-if="isShowingOptions"
-        class=" text-black text-lg font-secondary
+        class="text-black text-lg font-secondary cursor-pointer
                  font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-1
-                w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
+                 w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
         @click="toggleOptions" 
     >
         <li 

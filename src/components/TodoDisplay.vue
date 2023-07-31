@@ -11,6 +11,7 @@
                     @updatePriority="updatePriority"
                     @deleteTodo="deleteTodo"
                     @closeEditMode="closeEditMode"
+                    @moveToPosition="moveToPosition"
                 >
                 </TodoElement>
             </li>
@@ -38,7 +39,7 @@ const props = defineProps<Props>()
 //Add emit to modify data in parent component
 const emit = defineEmits(['deleteTodo', 'toggleEditMode', 'allEditModeFalse', 
                           'toggleTodoCheckedState', 'removeTodo', 'updatePriority',
-                          'deleteTodo', 'closeEditMode'])
+                          'deleteTodo', 'closeEditMode', 'moveToPosition'])
 
 const reversedTodos = computed(() => props.todos.slice().reverse());
 
@@ -64,6 +65,10 @@ function deleteTodo(todo: TodoType) {
 
 function closeEditMode(todo: TodoType) {
     emit('closeEditMode', todo)
+}
+
+function moveToPosition(todo: TodoType) {
+    emit('moveToPosition', todo)
 }
 
 </script>

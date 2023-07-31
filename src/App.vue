@@ -13,9 +13,11 @@
       @updatePriority="updatePriority"
       @deleteTodo="deleteTodo"
       @closeEditMode="closeEditMode"
+      @moveToPosition="moveToPosition"
     /> 
 
     <TodoForm 
+      class="hidden"
       :todos="todos"
       @clearTodo="clearTodo" 
       @addTodo="addTodo"
@@ -103,9 +105,9 @@ function closeEditMode(todo: TodoType) {
 
 function dateFormat(date: Date) {
   const formattedDate = date.toLocaleDateString('en', {
-  year: 'numeric',
-  month: '2-digit',
-  day: 'numeric',
+    year: 'numeric',
+    month: '2-digit',
+    day: 'numeric',
   }).replace(/\//g, '.');
 
   return formattedDate;
@@ -117,6 +119,22 @@ function toggleTodoCheckedState (todo: TodoType) {
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     todo.priority = option.name;
+}
+
+function moveToPosition(todo: TodoType) {
+  const index = todos.value.findIndex((t) => t.id === todo.id);
+
+  if (index === -1) {
+    return;
+  }
+
+  todos.value.splice(index, 1)
+  
+  todo.isChecked ? todos.value.unshift(todo) : todos.value.push(todo)
+
+  todos.value.forEach((todo: TodoType) => {
+        todo.isEditing = false;
+  });
 }
 
 </script>
