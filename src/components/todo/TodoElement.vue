@@ -55,7 +55,7 @@
         <div class="sm:grid grid-rows-1 grid-flow-col gap-0 justify-between sm:mt-4 flex items-center">
             <div class="row-span-2 hidden sm:flex">
                 <p 
-                   re="newDescription"
+                   ref="newDescription"
                    class="font-primary font-semibold md:text-1xl text-left"
                    :class="todoDescriptionStyle"
                    :contenteditable="todo.isEditing"
