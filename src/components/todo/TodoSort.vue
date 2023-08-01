@@ -6,25 +6,28 @@
                     class="scale-[0.85] w-20"
                     button-title="Title"
                     color="green"
-                    @click="sortByTitle"
+                    @click="sortTodos('title')"
                 >
                 </BaseButton>
                 <BaseButton 
                     class="scale-[0.85] w-28"
                     button-title="Description"
                     color="black"
+                    @click="sortTodos('description')"
                 >
                 </BaseButton>
                 <BaseButton 
                     class="scale-[0.85] w-20"
                     button-title="Priority"
                     color="white"
+                    @click="sortTodos('priority')"
                 >
                 </BaseButton>
                 <BaseButton 
                     button-title="Date"
                     color="white"
                     class="scale-[0.85] w-16"
+                    @click="sortTodos('date')"
                 >
                 </BaseButton>
 
@@ -35,12 +38,14 @@
                     button-title="↑"
                     color="green"
                     class="scale-[0.85] w-11"
+                    @click="reverseTodos"
                 >
                 </BaseButton>
                 <BaseButton 
                     button-title="↓"
                     color="black"
                     class="scale-[0.85] w-11"
+                    @click="reverseTodos"
                 >
                 </BaseButton>
             </div> 
@@ -60,10 +65,14 @@ interface Props {
 
 defineProps<Props>()
 
-const emit = defineEmits(['sortByTitle'])
+const emit = defineEmits(['sortTodos', 'reverseTodos'])
 
-function sortByTitle() {
-    emit('sortByTitle')
+function sortTodos(attribute: string) {
+    emit('sortTodos', attribute)
+}
+
+function reverseTodos() {
+    emit('reverseTodos')
 }
 
 </script>

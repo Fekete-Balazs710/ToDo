@@ -4,7 +4,8 @@
       :todos="todos"
       @addTodo="addTodo"
       @onFilterTodos="filterTodos" 
-      @sortByTitle="sortByTitle"
+      @sortTodos="sortTodos"
+      @reverseTodos="reverseTodos"
     >
     </Header>
 
@@ -168,14 +169,38 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
     todo.description = todoDescription;
 }
 
-function sortByTitle() {
+function sortTodos(attribute: string) {
   todos.value.sort((a: TodoType, b: TodoType) => {
-    const titleA = a.title.toLowerCase();
-    const titleB = b.title.toLowerCase();
-    if (titleA < titleB) return 1;
-    if (titleA > titleB) return -1;
+    
+    if (attribute === 'title') {
+
+      const titleA = a.title.toLowerCase();
+      const titleB = b.title.toLowerCase();
+      if (titleA < titleB) return 1;
+      if (titleA > titleB) return -1;
+      return 0;
+
+    } else if (attribute === 'description') {
+
+      const descriptionA = a.description.toLowerCase();
+      const descriptionB = b.description.toLowerCase();
+      if (descriptionA < descriptionB) return 1;
+      if (descriptionA > descriptionB) return -1;
+      return 0;
+
+    } else if(attribute === 'date') {
+
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return dateB.getTime() - dateA.getTime();
+    }
+
     return 0;
   });
+}
+
+function reverseTodos() {
+  todos.value.reverse();
 }
 
 

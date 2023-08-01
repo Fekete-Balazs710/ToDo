@@ -21,12 +21,13 @@
     >
     </TodoSearch>
 
-    <TodoFilter
+    <TodoSort
         v-if="todos.length"
         :todos="todos"
-        @sortByTitle="sortByTitle"
+        @sortTodos="sortTodos"
+        @reverseTodos="reverseTodos"
     >
-    </TodoFilter>
+    </TodoSort>
 
 </template>
 
@@ -35,7 +36,7 @@
 import AddTodoButton from '../AddTodoButton.vue'
 import UserWelcome from './UserWelcome.vue';
 import TodoSearch from '../todo/TodoSearch.vue';
-import TodoFilter from '../todo/TodoFilter.vue';
+import TodoSort from '../todo/TodoSort.vue';
 
 import { TodoType } from '../../types/TodoType';
 
@@ -46,7 +47,7 @@ interface Props {
 defineProps<Props>()
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['addTodo', 'onFilterTodos', 'sortByTitle'])
+const emit = defineEmits(['addTodo', 'onFilterTodos', 'sortTodos', 'reverseTodos'])
 
 function todoCreate() {
     emit('addTodo');
@@ -56,8 +57,12 @@ function onFilterTodos(todos: TodoType[], search: string) {
     emit('onFilterTodos', todos, search)
 }
 
-function sortByTitle() {
-    emit('sortByTitle')
+function sortTodos(attribute: string) {
+    emit('sortTodos', attribute)
+}
+
+function reverseTodos() {
+    emit('reverseTodos')
 }
 
 </script>
