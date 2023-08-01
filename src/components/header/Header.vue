@@ -24,6 +24,7 @@
     <TodoFilter
         v-if="todos.length"
         :todos="todos"
+        @sortByTitle="sortByTitle"
     >
     </TodoFilter>
 
@@ -45,7 +46,7 @@ interface Props {
 defineProps<Props>()
 
 //Add emit to modify data in parent component
-const emit = defineEmits(['addTodo', 'onFilterTodos'])
+const emit = defineEmits(['addTodo', 'onFilterTodos', 'sortByTitle'])
 
 function todoCreate() {
     emit('addTodo');
@@ -53,6 +54,10 @@ function todoCreate() {
 
 function onFilterTodos(todos: TodoType[], search: string) {
     emit('onFilterTodos', todos, search)
+}
+
+function sortByTitle() {
+    emit('sortByTitle')
 }
 
 </script>

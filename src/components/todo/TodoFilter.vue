@@ -6,6 +6,7 @@
                     class="scale-[0.85] w-20"
                     button-title="Title"
                     color="green"
+                    @click="sortByTitle"
                 >
                 </BaseButton>
                 <BaseButton 
@@ -58,5 +59,11 @@ interface Props {
 }
 
 defineProps<Props>()
+
+const emit = defineEmits(['sortByTitle'])
+
+function sortByTitle() {
+    emit('sortByTitle')
+}
 
 </script>

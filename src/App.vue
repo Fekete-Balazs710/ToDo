@@ -4,6 +4,7 @@
       :todos="todos"
       @addTodo="addTodo"
       @onFilterTodos="filterTodos" 
+      @sortByTitle="sortByTitle"
     >
     </Header>
 
@@ -167,5 +168,82 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
     todo.description = todoDescription;
 }
 
+function sortByTitle() {
+  todos.value.sort((a: TodoType, b: TodoType) => {
+    const titleA = a.title.toLowerCase();
+    const titleB = b.title.toLowerCase();
+    if (titleA < titleB) return 1;
+    if (titleA > titleB) return -1;
+    return 0;
+  });
+}
+
+
+const todosimple1: TodoType = {
+      id: 888, 
+      title: "Make dinner", 
+      description: "Buy groceries and make dinner",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple2: TodoType = {
+      id: 943, 
+      title: "Call a friend", 
+      description: "Talk about the latest trends",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple3: TodoType = {
+      id: 999, 
+      title: "Clean the house", 
+      description: "Prepare the house for the guests",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple4: TodoType = {
+      id: 978, 
+      title: "Pc setup", 
+      description: "Do some cable management",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple5: TodoType = {
+      id: 348, 
+      title: "Make some cleaning in the kitchen", 
+      description: "Clean the kitchen after cooking",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+const todosimple6: TodoType = {
+      id: 428, 
+      title: "Add flour and sugar to shopping list", 
+      description: "Groceries",
+      priority: "High",
+      isChecked: false,
+      isEditing: false,
+      date: dateFormat(new Date())
+}
+
+todos.value.push(todosimple1);
+todos.value.push(todosimple2);
+todos.value.push(todosimple3);
+todos.value.push(todosimple4);
+todos.value.push(todosimple5);
+todos.value.push(todosimple6);
 </script>
 
