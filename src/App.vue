@@ -60,6 +60,13 @@ const isShowingModal = ref<boolean>(false);
 
 const search = ref("")
 
+const priorityValues: Record<string, number> = {
+  'High': 3,
+  'Medium': 2,
+  'Low': 1,
+};
+
+
 const filteredTodos = computed(() => 
    todos.value.filter((todo: TodoType) => 
        search.value
@@ -171,31 +178,34 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
 
 function sortTodos(attribute: string) {
   todos.value.sort((a: TodoType, b: TodoType) => {
-    
-    if (attribute === 'title') {
+    switch (attribute) {
+      case 'title':
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        if (titleA < titleB) return 1;
+        if (titleA > titleB) return -1;
+        return 0;
 
-      const titleA = a.title.toLowerCase();
-      const titleB = b.title.toLowerCase();
-      if (titleA < titleB) return 1;
-      if (titleA > titleB) return -1;
-      return 0;
+      case 'description':
+        const descriptionA = a.description.toLowerCase();
+        const descriptionB = b.description.toLowerCase();
+        if (descriptionA < descriptionB) return 1;
+        if (descriptionA > descriptionB) return -1;
+        return 0;
 
-    } else if (attribute === 'description') {
+      case 'priority':
+        const priorityA = priorityValues[a.priority];
+        const priorityB = priorityValues[b.priority];
+        return priorityB - priorityA;
 
-      const descriptionA = a.description.toLowerCase();
-      const descriptionB = b.description.toLowerCase();
-      if (descriptionA < descriptionB) return 1;
-      if (descriptionA > descriptionB) return -1;
-      return 0;
-
-    } else if(attribute === 'date') {
-
-      const dateA = new Date(a.date);
-      const dateB = new Date(b.date);
-      return dateB.getTime() - dateA.getTime();
+      case 'date':
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+        
+      default:
+        return 0;
     }
-
-    return 0;
   });
 }
 
