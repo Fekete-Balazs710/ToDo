@@ -21,6 +21,12 @@
     >
     </TodoSearch>
 
+    <TodoFilter
+        v-if="todos.length"
+        :todos="todos"
+    >
+    </TodoFilter>
+
 </template>
 
 <script setup lang="ts">
@@ -28,6 +34,7 @@
 import AddTodoButton from '../AddTodoButton.vue'
 import UserWelcome from './UserWelcome.vue';
 import TodoSearch from '../todo/TodoSearch.vue';
+import TodoFilter from '../todo/TodoFilter.vue';
 
 import { TodoType } from '../../types/TodoType';
 

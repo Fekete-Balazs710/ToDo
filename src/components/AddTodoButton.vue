@@ -1,7 +1,7 @@
 <template>
     <div 
         class="relative flex items-center cursor-pointer 
-               hover:scale-105 ease-out duration-300" 
+               hover:scale-110 ease-out duration-300" 
         @click="todoCreate()"
     >
         <div class="absolute w-full h-full flex items-center justify-center shrink-0">

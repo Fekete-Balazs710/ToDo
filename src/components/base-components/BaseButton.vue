@@ -1,6 +1,6 @@
 <template>
     <button 
-        class="p-3 btn btn-blue font-semibold rounded-2xl
+        class="p-3 btn btn-blue font-semibold rounded-xl
                w-28 font-primary transform hover:scale-105 ease-out duration-300"
         :class="addButtonColor(color)">
         {{ buttonTitle }}
@@ -34,6 +34,9 @@ function addButtonColor(color: string) {
     case "black":
       buttonColor.value = "bg-black hover:bg-[#2b2b2b] text-white";
       break;
+    case "white":
+    buttonColor.value = "bg-white hover:bg-[#ebebeb] text-black border-2 border-black";
+    break;
   }
 
   return buttonColor.value;

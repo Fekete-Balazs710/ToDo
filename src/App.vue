@@ -25,7 +25,6 @@
     <NoTodosFound
       v-if="!filteredTodos.length && todos.length"
     >
-
     </NoTodosFound>
 
     <TodoForm 
