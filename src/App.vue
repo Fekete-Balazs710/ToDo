@@ -1,12 +1,17 @@
 <template>
   <div>
-    <Header @addTodo="addTodo"></Header>
+    <Header 
+      :todos="todos"
+      @addTodo="addTodo"
+      @onFilterTodos="filterTodos" 
+    >
+    </Header>
 
     <Notodos v-if="!todos.length"/>
     
     <TodoDisplay
       v-else
-      :todos="todos" 
+      :todos="filteredTodos" 
       :isShowingModal="isShowingModal"
       @toggleEditMode="toggleEditMode"
       @toggleTodoCheckedState="toggleTodoCheckedState"
@@ -14,7 +19,14 @@
       @deleteTodo="deleteTodo"
       @closeEditMode="closeEditMode"
       @moveToPosition="moveToPosition"
+      @saveTodo="saveTodo"
     /> 
+
+    <NoTodosFound
+      v-if="!filteredTodos.length && todos.length"
+    >
+
+    </NoTodosFound>
 
     <TodoForm 
       class="hidden"
@@ -29,12 +41,13 @@
 
 <script setup lang="ts">
 
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
+import NoTodosFound from './components/todo/NoTodosFound.vue';
 
 import { TodoType } from './types/TodoType'
 import { OptionsType } from '../src/types/OptionsType'
@@ -42,6 +55,18 @@ import { OptionsType } from '../src/types/OptionsType'
 // Array of TodoType objects for the todo list elements
 const todos = ref<TodoType[]>([]);
 
+const isShowingModal = ref<boolean>(false);
+
+const search = ref("")
+
+const filteredTodos = computed(() => 
+   todos.value.filter((todo: TodoType) => 
+       search.value
+            .toLowerCase()
+            .split(" ")
+            .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
+    )
+)
 
 //Add function to add elements to existing array of todos
 function addTodo() {
@@ -54,7 +79,6 @@ function addTodo() {
       maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
     } 
     
-
     //add new todo element to list, position: maxId + 1
     const emptyTodo: TodoType = { 
       id: maxId + 1, 
@@ -67,10 +91,7 @@ function addTodo() {
     };
 
     todos.value.push(emptyTodo);
-    
   }
-
-  const isShowingModal = ref<boolean>(false);
 
 //Delete function to remove elements from todos array
 function deleteTodo(todo: TodoType) {
@@ -129,12 +150,22 @@ function moveToPosition(todo: TodoType) {
   }
 
   todos.value.splice(index, 1)
-  
+
   todo.isChecked ? todos.value.unshift(todo) : todos.value.push(todo)
 
   todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
   });
+}
+
+
+function filterTodos(searchValue: string) {
+  search.value = searchValue
+}
+
+function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
+    todo.title = todoTitle;
+    todo.description = todoDescription;
 }
 
 </script>

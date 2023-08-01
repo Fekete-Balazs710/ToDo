@@ -1,7 +1,8 @@
 <template>
-    <div class="rounded-full text-white text-lg font-secondary
-                font-semibold flex justify-center items-center
-                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer"
+    <div 
+        class="rounded-full text-white text-lg font-secondary
+                font-semibold justify-center items-center
+                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer hidden sm:flex"
         :class="selectedColor"
         @click="toggleOptions"
     >
@@ -12,10 +13,53 @@
         </p>   
     </div>
 
+    <div class="rounded-full text-white text-lg font-secondary
+                font-semibold flex justify-center items-center ml-1
+                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
+                bg-[#38CBCB]"
+                :class="{ 'border-2 border-black': selectedColor === 'bg-[#38CBCB]' }"
+        @click="updatePriorityColor(todo, {name: 'Low', value: 'low'})"
+    >
+        <p
+            class="hidden sm:flex"
+        >
+            {{ todo.priority }} 
+        </p>   
+    </div>
+
+    <div class="rounded-full text-white text-lg font-secondary
+                font-semibold flex justify-center items-center ml-2
+                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
+                bg-[#FFAB00]"
+        :class="{ 'border-2 border-black': selectedColor === 'bg-[#FFAB00]' }"
+        @click="updatePriorityColor(todo, {name: 'Medium', value: 'medium'})"
+    >
+        <p
+            class="hidden sm:flex"
+        >
+            {{ todo.priority }} 
+        </p>   
+    </div>
+
+    <div class="rounded-full text-white text-lg font-secondary
+                font-semibold flex justify-center items-center ml-2
+                sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
+                bg-[#FF481F]"
+        :class="{ 'border-2 border-black': selectedColor === 'bg-[#FF481F]' }"
+        @click="updatePriorityColor(todo, {name: 'High', value: 'high'})"
+    >
+        <p
+            class="hidden sm:flex"
+        >
+            {{ todo.priority }} 
+        </p>   
+    </div>
+
+
     <ul 
         v-if="isShowingOptions"
         class="text-black text-lg font-secondary cursor-pointer
-                 font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-1
+                 font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-2
                  w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
         @click="toggleOptions" 
     >
@@ -46,8 +90,6 @@ defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['UpdatePriority'])
-
-//const selectedOption = ref("high");
 
 const selectedColor = ref("bg-[#FF481F]");
 
