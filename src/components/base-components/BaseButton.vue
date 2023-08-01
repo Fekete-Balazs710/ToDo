@@ -26,8 +26,10 @@ function addButtonColor(color: string) {
     buttonColor.value = "bg-[#38CB89] hover:bg-[#32aa74] text-white" 
   } else if(color === "red") {
     buttonColor.value = "bg-red-400 hover:bg-red-500 text-white"
-  } else {
+  } else if (color === "gray"){
     buttonColor.value = "bg-[#E6E6E6] hover:bg-[#c2c1c1] text-black"
+  } else if (color === "black") {
+    buttonColor.value = "bg-black hover:bg-[#2b2b2b] text-white"
   }
   
   return buttonColor.value

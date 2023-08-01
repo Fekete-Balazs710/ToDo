@@ -5,10 +5,11 @@
             <div class="flex justify-start items-center text-center">
                 <SearchIcon/>
                 <input 
-                    class="lg:text-xl sm:text-lg font-primary font-semibold
-                             text-[#4F4F4F] ml-3 border-0 sm:w-[22rem] w-[10rem]"
-                    type="text"
                     v-model="search"
+                    class="lg:text-xl sm:text-lg font-primary font-semibold
+                             text-[#4F4F4F] ml-3 border-0 sm:w-[22rem] w-[10rem]
+                             shadow-none shadow-transparent"
+                    type="text"
                     placeholder="Search todos..."
                     @input="onFilterTodos(search)"
                 > 

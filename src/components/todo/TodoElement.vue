@@ -25,6 +25,7 @@
             </div>
             <div class="sm:row-span-3">
                 <p
+                    ref="newTitle"
                     class="text-black font-primary lg:text-4xl text-3xl
                             font-semibold text-left"
                     :contenteditable="todo.isEditing"
@@ -53,11 +54,13 @@
 
         <div class="sm:grid grid-rows-1 grid-flow-col gap-0 justify-between sm:mt-4 flex items-center">
             <div class="row-span-2 hidden sm:flex">
-                <p class="font-primary font-semibold md:text-1xl text-left"
+                <p 
+                   re="newDescription"
+                   class="font-primary font-semibold md:text-1xl text-left"
                    :class="todoDescriptionStyle"
                    :contenteditable="todo.isEditing"
                 >
-                    {{ todo.description }} 
+                    {{ todo.description }}  
                 </p>
             </div>
             <div class="col-span-1 hidden sm:flex">
@@ -70,7 +73,7 @@
                 >
                 </TodoCheckbox>
             </div>
-            <div class="col-span-1 sm:hidden">
+            <div class="col-span-1 sm:hidden flex">
                 <TodoPriority
                     :todo="todo"
                     @updatePriority="updatePriority"
@@ -81,8 +84,10 @@
     </div>
         <div v-if="todo.isEditing" class="flex items-start p-5">
             <div class="sm:hidden">
-                <p class="font-primary font-medium text-left text-[#757575]"
-                :contenteditable="todo.isEditing"
+                <p 
+                    ref="newDescription"
+                    class="font-primary font-medium text-left text-[#757575]"
+                    :contenteditable="todo.isEditing"
                 >
                     {{ todo.description }} 
                 </p>
@@ -93,7 +98,7 @@
                 button-title="Save"
                 color="green"
                 type="submit"
-                @click.stop="closeEditMode(todo)"
+                @click.stop="saveTodo(todo)"
             >
             </BaseButton>
 
@@ -134,7 +139,8 @@ const props = defineProps<Props>()
 
 //Add emit to modify data in parent component
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
-                          'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToPosition'])
+                          'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToPosition',
+                          'saveTodo'])
 
 const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
 
@@ -164,7 +170,15 @@ function closeModal() {
     isShowingModal.value = false;
 }
 
-function closeEditMode(todo: TodoType) {
+const newTitle = ref<HTMLElement | null>(null);
+const newDescription = ref<HTMLElement | null>(null);
+
+function saveTodo(todo: TodoType) {
+
+    const updatedTitle = newTitle.value?.innerHTML || ''
+    const updatedDescription = newDescription.value?.innerHTML || ''
+
+    emit('saveTodo', todo, updatedTitle, updatedDescription)
     emit('closeEditMode', todo)
 }
 

@@ -19,10 +19,11 @@
       @deleteTodo="deleteTodo"
       @closeEditMode="closeEditMode"
       @moveToPosition="moveToPosition"
+      @saveTodo="saveTodo"
     /> 
 
     <NoTodosFound
-      v-if="!filteredTodos.length"
+      v-if="!filteredTodos.length && todos.length"
     >
 
     </NoTodosFound>
@@ -54,6 +55,18 @@ import { OptionsType } from '../src/types/OptionsType'
 // Array of TodoType objects for the todo list elements
 const todos = ref<TodoType[]>([]);
 
+const isShowingModal = ref<boolean>(false);
+
+const search = ref("")
+
+const filteredTodos = computed(() => 
+   todos.value.filter((todo: TodoType) => 
+       search.value
+            .toLowerCase()
+            .split(" ")
+            .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
+    )
+)
 
 //Add function to add elements to existing array of todos
 function addTodo() {
@@ -66,7 +79,6 @@ function addTodo() {
       maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
     } 
     
-
     //add new todo element to list, position: maxId + 1
     const emptyTodo: TodoType = { 
       id: maxId + 1, 
@@ -79,10 +91,7 @@ function addTodo() {
     };
 
     todos.value.push(emptyTodo);
-    
   }
-
-  const isShowingModal = ref<boolean>(false);
 
 //Delete function to remove elements from todos array
 function deleteTodo(todo: TodoType) {
@@ -154,62 +163,10 @@ function filterTodos(searchValue: string) {
   search.value = searchValue
 }
 
-const search = ref("")
-
-const filteredTodos = computed(() => 
-   todos.value.filter((todo: TodoType) => 
-       search.value
-            .toLowerCase()
-            .split(" ")
-            .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
-    )
-)
-
-const todosimple1: TodoType = {
-      id: 888, 
-      title: "Make dinner", 
-      description: "Lorem ipsum dolor sit amet",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
+function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
+    todo.title = todoTitle;
+    todo.description = todoDescription;
 }
-
-const todosimple2: TodoType = {
-      id: 943, 
-      title: "Call a friend", 
-      description: "Consectetur adipiscing elit",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-const todosimple3: TodoType = {
-      id: 999, 
-      title: "Clean the house", 
-      description: "Suspendisse lectus tortor",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-const todosimple4: TodoType = {
-      id: 978, 
-      title: "Pc setup", 
-      description: "Cras elementum ultrices diam",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-todos.value.push(todosimple1);
-todos.value.push(todosimple2);
-todos.value.push(todosimple3);
-todos.value.push(todosimple4);
-
 
 </script>
 
