@@ -4,6 +4,8 @@
       :todos="todos"
       @addTodo="addTodo"
       @onFilterTodos="filterTodos" 
+      @sortTodos="sortTodos"
+      @reverseTodos="reverseTodos"
     >
     </Header>
 
@@ -25,7 +27,6 @@
     <NoTodosFound
       v-if="!filteredTodos.length && todos.length"
     >
-
     </NoTodosFound>
 
     <TodoForm 
@@ -44,7 +45,6 @@
 import { ref, computed } from 'vue';
 
 import Header from './components/header/Header.vue';
-import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
 import NoTodosFound from './components/todo/NoTodosFound.vue';
@@ -53,11 +53,17 @@ import { TodoType } from './types/TodoType'
 import { OptionsType } from '../src/types/OptionsType'
 
 // Array of TodoType objects for the todo list elements
-const todos = ref<TodoType[]>([]);
-
-const isShowingModal = ref<boolean>(false);
+const todos = ref(localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')!) : []);
 
 const search = ref("")
+
+const isShowingModal = ref(false);
+
+const priorityValues: Record<string, number> = {
+  'High': 3,
+  'Medium': 2,
+  'Low': 1,
+};
 
 const filteredTodos = computed(() => 
    todos.value.filter((todo: TodoType) => 
@@ -70,7 +76,6 @@ const filteredTodos = computed(() =>
 
 //Add function to add elements to existing array of todos
 function addTodo() {
-    
     //define the largest id in the todos array
     //as a starting point (when no todos are added to list) maxId = 0
     let maxId = 0; 
@@ -91,13 +96,15 @@ function addTodo() {
     };
 
     todos.value.push(emptyTodo);
+
+    saveTodosToLocalStorage();
   }
 
 //Delete function to remove elements from todos array
 function deleteTodo(todo: TodoType) {
  
   const todoId = todo.id;
-  const index = todos.value.findIndex(todo => todo.id === todoId);
+  const index = todos.value.findIndex((todo: { id: number; }) => todo.id === todoId);
   if (index == -1) {
     return
   }
@@ -108,10 +115,13 @@ function deleteTodo(todo: TodoType) {
   todos.value = todos.value.slice();
 
   isShowingModal.value = false;
+
+  saveTodosToLocalStorage()
 }
 
 function clearTodo() {
     todos.value = [];
+    saveTodosToLocalStorage()
 }  
 
 function toggleEditMode(id: number) {
@@ -125,25 +135,25 @@ function closeEditMode(todo: TodoType) {
 }
 
 function dateFormat(date: Date) {
-  const formattedDate = date.toLocaleDateString('en', {
-    year: 'numeric',
-    month: '2-digit',
-    day: 'numeric',
-  }).replace(/\//g, '.');
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString();
 
-  return formattedDate;
+  return `${day}.${month}.${year}`;
 }
 
 function toggleTodoCheckedState (todo: TodoType) {
   todo.isChecked = !todo.isChecked;
+  saveTodosToLocalStorage()
 }
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     todo.priority = option.name;
+    saveTodosToLocalStorage()
 }
 
 function moveToPosition(todo: TodoType) {
-  const index = todos.value.findIndex((t) => t.id === todo.id);
+  const index = todos.value.findIndex((t: TodoType) => t.id === todo.id);
 
   if (index === -1) {
     return;
@@ -166,6 +176,50 @@ function filterTodos(searchValue: string) {
 function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
     todo.title = todoTitle;
     todo.description = todoDescription;
+    saveTodosToLocalStorage()
+}
+
+function sortTodos(attribute: string) {
+  todos.value.sort((a: TodoType, b: TodoType) => {
+    switch (attribute) {
+      case 'title':
+        const titleA = a.title.toLowerCase();
+        const titleB = b.title.toLowerCase();
+        if (titleA < titleB) return 1;
+        if (titleA > titleB) return -1;
+        return 0;
+
+      case 'description':
+        const descriptionA = a.description.toLowerCase();
+        const descriptionB = b.description.toLowerCase();
+        if (descriptionA < descriptionB) return 1;
+        if (descriptionA > descriptionB) return -1;
+        return 0;
+
+      case 'priority':
+        const priorityA = priorityValues[a.priority];
+        const priorityB = priorityValues[b.priority];
+        return priorityB - priorityA;
+
+      case 'date':
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB.getTime() - dateA.getTime();
+
+      default:
+        return 0;
+    }
+  });
+}
+
+function reverseTodos() {
+  todos.value.reverse();
+  saveTodosToLocalStorage()
+}
+
+// Function to save todos to localStorage
+function saveTodosToLocalStorage() {
+  localStorage.setItem('todos', JSON.stringify(todos.value));
 }
 
 </script>

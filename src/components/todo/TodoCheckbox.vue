@@ -17,8 +17,7 @@
       stroke="#4FDA9B"
       class="z-20">
     </CircleCheckIcon>
-  </div>
-  
+  </div>  
 </template>
 
 <script setup lang="ts">

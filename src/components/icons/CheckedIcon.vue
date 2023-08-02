@@ -8,6 +8,5 @@
                 <rect width="44" height="43" fill="white" transform="translate(0 0.793365)"/>
             </clipPath>
         </defs>
-
     </svg>
 </template>

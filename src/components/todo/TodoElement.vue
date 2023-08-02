@@ -2,13 +2,15 @@
     <ConfirmDelete 
         v-if="isShowingModal" 
         :todo="todo"
-        @deleteTodo="deleteTodo"
         @closeModal="closeModal"
+        @deleteTodo="deleteTodo"
     >
     </ConfirmDelete>
+    
     <div class="container p-5 border-2 border-black rounded-2xl mt-8
-                transform hover:scale-105 ease-out duration-300"
-         @click="toggleEditMode(todo.id)"
+                transform hover:scale-105 ease-out duration-300 bg-white"
+         @click="toggleEditMode(todo.id)" 
+         v-on-click-outside="onClickOutsideHandler"
     >
     <div class="flex sm:grid justify-between sm:justify-normal">
         <div class="sm:grid sm:grid-rows-1 sm:grid-flow-col gap-4 justify-between
@@ -46,6 +48,7 @@
             <div class="col-span-1 hidden sm:flex">
                 <TodoPriority
                     :todo="todo"
+                    :priorityColor="priorityColor"
                     @updatePriority="updatePriority"
                 >
                 </TodoPriority>
@@ -55,7 +58,7 @@
         <div class="sm:grid grid-rows-1 grid-flow-col gap-0 justify-between sm:mt-4 flex items-center">
             <div class="row-span-2 hidden sm:flex">
                 <p 
-                   ref="newDescription"
+                   ref="newDescriptionDesktop"
                    class="font-primary font-semibold md:text-1xl text-left"
                    :class="todoDescriptionStyle"
                    :contenteditable="todo.isEditing"
@@ -76,6 +79,7 @@
             <div class="col-span-1 sm:hidden flex">
                 <TodoPriority
                     :todo="todo"
+                    :priorityColor="priorityColor"
                     @updatePriority="updatePriority"
                 >
                 </TodoPriority>
@@ -85,7 +89,7 @@
         <div v-if="todo.isEditing" class="flex items-start p-5">
             <div class="sm:hidden">
                 <p 
-                    ref="newDescription"
+                    ref="newDescriptionMobile"
                     class="font-primary font-medium text-left text-[#757575]"
                     :contenteditable="todo.isEditing"
                 >
@@ -101,7 +105,6 @@
                 @click.stop="saveTodo(todo)"
             >
             </BaseButton>
-
             <BaseButton
                 class="ml-3"
                 button-title="Delete"
@@ -110,15 +113,14 @@
                 @click="activateModal"
             >
             </BaseButton>
-        </div>
-        
+        </div> 
     </div>
-    
 </template>
 
 <script setup lang="ts">
 
 import { ref, computed } from 'vue';
+import { vOnClickOutside } from '@vueuse/components'
 
 import TodoPriority from './TodoPriority.vue';
 import TodoCheckbox from './TodoCheckbox.vue';
@@ -132,7 +134,6 @@ import { TodoType } from '../../types/TodoType'
 //Receive data from parent component
 interface Props {
     todo: TodoType;
-    isShowingModal: boolean;
 }
 
 const props = defineProps<Props>()
@@ -142,7 +143,17 @@ const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTod
                           'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToPosition',
                           'saveTodo'])
 
+const isShowingModal = ref(false);
+
 const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
+
+const priorityColor = computed(() => {
+    if(props.todo.priority === "High") {
+        return "bg-[#FF481F]"
+    } else if(props.todo.priority === "Medium") {
+        return "bg-[#FFAB00]"
+    } else return "bg-[#38CBCB]"
+})
 
 function toggleEditMode(id: number) {
     emit('toggleEditMode', id); 
@@ -156,13 +167,12 @@ function updatePriority(todo: TodoType, option: OptionsType) {
     emit('updatePriority', todo, option)
 }
 
-const isShowingModal = ref<boolean>(false);
-
 function activateModal() {
     isShowingModal.value = true;
 }
 
 function deleteTodo(todo: TodoType) {
+    isShowingModal.value = false;
     emit('deleteTodo', todo)
 }
 
@@ -171,12 +181,15 @@ function closeModal() {
 }
 
 const newTitle = ref<HTMLElement | null>(null);
-const newDescription = ref<HTMLElement | null>(null);
+const newDescriptionMobile = ref<HTMLElement | null>(null);
+const newDescriptionDesktop = ref<HTMLElement | null>(null);
 
 function saveTodo(todo: TodoType) {
 
     const updatedTitle = newTitle.value?.innerHTML || ''
-    const updatedDescription = newDescription.value?.innerHTML || ''
+    let updatedDescription = '';
+
+    updatedDescription = newDescriptionDesktop.value?.innerHTML || newDescriptionMobile.value?.innerHTML || ''
 
     emit('saveTodo', todo, updatedTitle, updatedDescription)
     emit('closeEditMode', todo)
@@ -184,6 +197,10 @@ function saveTodo(todo: TodoType) {
 
 function moveToPosition(todo: TodoType) {
     emit('moveToPosition', todo)
+}
+
+function onClickOutsideHandler() {
+    emit('closeEditMode', props.todo)
 }
 
 </script>
