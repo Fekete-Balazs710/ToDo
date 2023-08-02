@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed } from 'vue';
 
 import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
@@ -54,11 +54,11 @@ import { TodoType } from './types/TodoType'
 import { OptionsType } from '../src/types/OptionsType'
 
 // Array of TodoType objects for the todo list elements
-const todos = ref<TodoType[]>([]);
-
-const isShowingModal = ref<boolean>(false);
+const todos = ref(localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')!) : []);
 
 const search = ref("")
+
+const isShowingModal = ref(false);
 
 const priorityValues: Record<string, number> = {
   'High': 3,
@@ -106,7 +106,7 @@ function addTodo() {
 function deleteTodo(todo: TodoType) {
  
   const todoId = todo.id;
-  const index = todos.value.findIndex(todo => todo.id === todoId);
+  const index = todos.value.findIndex((todo: { id: number; }) => todo.id === todoId);
   if (index == -1) {
     return
   }
@@ -130,12 +130,10 @@ function toggleEditMode(id: number) {
   todos.value.map((todo: TodoType) => {
     todo.isEditing = (todo.id === id)
   })
-  saveTodosToLocalStorage()
 }
 
 function closeEditMode(todo: TodoType) {
   todo.isEditing = false;
-  saveTodosToLocalStorage()
 }
 
 function dateFormat(date: Date) {
@@ -157,7 +155,7 @@ function updatePriority(todo: TodoType, option: OptionsType) {
 }
 
 function moveToPosition(todo: TodoType) {
-  const index = todos.value.findIndex((t) => t.id === todo.id);
+  const index = todos.value.findIndex((t: TodoType) => t.id === todo.id);
 
   if (index === -1) {
     return;
@@ -170,8 +168,7 @@ function moveToPosition(todo: TodoType) {
   todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
   });
-  saveTodosToLocalStorage()
-} 
+}
 
 
 function filterTodos(searchValue: string) {
@@ -182,8 +179,6 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
     todo.title = todoTitle;
     todo.description = todoDescription;
     saveTodosToLocalStorage()
-    console.log('todo saved')
-    console.log(todoTitle + ' ' + todoDescription)
 }
 
 function sortTodos(attribute: string) {
@@ -217,7 +212,6 @@ function sortTodos(attribute: string) {
         return 0;
     }
   });
-  saveTodosToLocalStorage()
 }
 
 function reverseTodos() {
@@ -225,19 +219,10 @@ function reverseTodos() {
   saveTodosToLocalStorage()
 }
 
-function getTodosFromLocalStorage() {
-  const storedTodos = localStorage.getItem('todos');
-  if (storedTodos) {
-    todos.value = JSON.parse(storedTodos);
-  }
-}
-
 // Function to save todos to localStorage
 function saveTodosToLocalStorage() {
   localStorage.setItem('todos', JSON.stringify(todos.value));
 }
-
-onMounted(getTodosFromLocalStorage);
 
 </script>
 

@@ -4,29 +4,33 @@
             <div class="sm:flex justify-start items-center sm:text-center">
                 <BaseButton 
                     class="sm:scale-[0.85] w-[6rem] sm:-ml-2 scale-[0.7] ml-2"
+                    :class="{'bg-[#38CB89] hover:bg-[#32aa74] text-white border-[#38CB89]': active === 'title'}"
                     button-title="Title"
-                    color="green"
+                    color="white"
                     @click="sortTodos('title')"
                 >
                 </BaseButton>
                 <BaseButton 
                     class="sm:scale-[0.85] w-[7rem] scale-[0.7] -ml-4 sm:ml-0"
+                    :class="{'bg-[#38CB89] hover:bg-[#32aa74] text-white border-[#38CB89]': active === 'description'}"
                     button-title="Description"
-                    color="black"
+                    color="white"
                     @click="sortTodos('description')"
                 >
                 </BaseButton>
                 <BaseButton 
                     class="sm:scale-[0.85] w-[6rem] scale-[0.7] -ml-4 sm:ml-0"
+                    :class="{'bg-[#38CB89] hover:bg-[#32aa74] text-white border-[#38CB89]': active === 'priority'}"
                     button-title="Priority"
                     color="white"
                     @click="sortTodos('priority')"
                 >
                 </BaseButton>
                 <BaseButton 
+                    class="sm:scale-[0.85] w-[5rem] scale-[0.7] -ml-4 sm:ml-0"
+                    :class="{'bg-[#38CB89] hover:bg-[#32aa74] text-white border-[#38CB89]': active === 'date'}"
                     button-title="Date"
                     color="white"
-                    class="sm:scale-[0.85] w-[5rem] scale-[0.7] -ml-4 sm:ml-0"
                     @click="sortTodos('date')"
                 >
                 </BaseButton>
@@ -35,23 +39,25 @@
             
             <div class="flex sm:justify-end justify-start items-center text-center mt-3 sm:mt-0">
                 <UpArrowButton
+                    v-if="whichArrow === 'up'"
                     class="ml-5 sm:ml-2"
                     @click="reverseTodos"
                 >
                 </UpArrowButton>
                 <DownArrowButton
-                    class="ml-2"
+                    v-else
+                    class="ml-5"
                     @click="reverseTodos"
                 >
                 </DownArrowButton>
-
             </div> 
         </div>
     </div>
-    
 </template>
 
 <script setup lang="ts">
+
+import { ref } from 'vue';
 
 import BaseButton from '../base-components/BaseButton.vue';
 import UpArrowButton from '../UpArrowButton.vue';
@@ -61,18 +67,22 @@ import { TodoType } from '../../types/TodoType';
 
 interface Props {
   todos: TodoType[]
+  whichArrow: string
 }
 
 defineProps<Props>()
 
 const emit = defineEmits(['sortTodos', 'reverseTodos'])
 
+const active = ref("")
+
 function sortTodos(attribute: string) {
     emit('sortTodos', attribute)
+    active.value = attribute
 }
 
 function reverseTodos() {
-    emit('reverseTodos')
+    emit('reverseTodos');
 }
 
 </script>

@@ -58,13 +58,14 @@
 
     <ul 
         v-if="isShowingOptions"
-        class="text-black text-lg font-secondary cursor-pointer
-                 font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-2
+        class="text-gray-600 text-lg font-secondary cursor-pointer
+                 font-semibold text-left p-3 rounded-2xl sm:mt-10 mt-2 
                  w-32 absolute z-50 bg-white border-2 border-black right-12 sm:right-auto"
         @click="toggleOptions" 
     >
         <li 
-            v-for="option in optionsObj" 
+            v-for="option in optionsObj"
+            class="hover:text-xl hover:font-bold hover:text-black"
             @click="updatePriorityColor(todo, option)"
         >
                 {{ option.name }}

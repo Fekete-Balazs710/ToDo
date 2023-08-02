@@ -24,6 +24,7 @@
     <TodoSort
         v-if="todos.length"
         :todos="todos"
+        :whichArrow="whichArrow"
         @sortTodos="sortTodos"
         @reverseTodos="reverseTodos"
     >
@@ -32,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+
+import { ref } from 'vue';
 
 import AddTodoButton from '../AddTodoButton.vue'
 import UserWelcome from './UserWelcome.vue';
@@ -49,6 +52,8 @@ defineProps<Props>()
 //Add emit to modify data in parent component
 const emit = defineEmits(['addTodo', 'onFilterTodos', 'sortTodos', 'reverseTodos'])
 
+const whichArrow = ref('up')
+
 function todoCreate() {
     emit('addTodo');
 }
@@ -63,6 +68,13 @@ function sortTodos(attribute: string) {
 
 function reverseTodos() {
     emit('reverseTodos')
+    if(whichArrow.value === "down")
+    {
+        whichArrow.value = "up"
+    } else {
+        whichArrow.value = "down"
+    }
+    
 }
 
 </script>

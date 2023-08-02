@@ -2,12 +2,13 @@
     <ConfirmDelete 
         v-if="isShowingModal" 
         :todo="todo"
-        @deleteTodo="deleteTodo"
         @closeModal="closeModal"
+        @deleteTodo="deleteTodo"
     >
     </ConfirmDelete>
+    
     <div class="container p-5 border-2 border-black rounded-2xl mt-8
-                transform hover:scale-105 ease-out duration-300"
+                transform hover:scale-105 ease-out duration-300 bg-white"
          @click="toggleEditMode(todo.id)" 
          v-on-click-outside="onClickOutsideHandler"
     >
@@ -136,7 +137,6 @@ import { TodoType } from '../../types/TodoType'
 //Receive data from parent component
 interface Props {
     todo: TodoType;
-    isShowingModal: boolean;
 }
 
 const props = defineProps<Props>()
@@ -145,6 +145,8 @@ const props = defineProps<Props>()
 const emit = defineEmits(['toggleEditMode', 'toggleTodoCheckedState', 'removeTodo', 
                           'updatePriority', 'deleteTodo', 'closeEditMode', 'moveToPosition',
                           'saveTodo'])
+
+const isShowingModal = ref(false);
 
 const todoDescriptionStyle = computed(() => props.todo.isEditing ? 'text-black md:text-2xl' : 'text-[#757575] text-xl');
 
@@ -168,13 +170,12 @@ function updatePriority(todo: TodoType, option: OptionsType) {
     emit('updatePriority', todo, option)
 }
 
-const isShowingModal = ref<boolean>(false);
-
 function activateModal() {
     isShowingModal.value = true;
 }
 
 function deleteTodo(todo: TodoType) {
+    isShowingModal.value = false;
     emit('deleteTodo', todo)
 }
 
@@ -191,14 +192,7 @@ function saveTodo(todo: TodoType) {
     const updatedTitle = newTitle.value?.innerHTML || ''
     let updatedDescription = '';
 
-    if(newDescriptionDesktop.value?.innerHTML) {
-        updatedDescription = newDescriptionDesktop.value?.innerHTML || ''
-    } else {
-        updatedDescription = newDescriptionMobile.value?.innerHTML || ''
-    }
-
-
-    console.log('TodoElement: ' + updatedTitle + ' ' + updatedDescription)
+    updatedDescription = newDescriptionDesktop.value?.innerHTML || newDescriptionMobile.value?.innerHTML || ''
 
     emit('saveTodo', todo, updatedTitle, updatedDescription)
     emit('closeEditMode', todo)

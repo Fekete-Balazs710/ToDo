@@ -1,10 +1,10 @@
 <template>
     <div class="container mx-auto text-center p-8 lg:w-[38rem]">
         <ul class="mt-5">
+            <TransitionGroup tag="ul" name="fade">
             <li v-for="todo in reversedTodos" :key="todo.id">
                 <TodoElement
                     :todo="todo"
-                    :isShowingModal="isShowingModal"
                     @removeTodo="removeTodo"
                     @toggleEditMode="toggleEditMode"
                     @toggleTodoCheckedState="toggleTodoCheckedState"
@@ -16,8 +16,10 @@
                 >
                 </TodoElement>
             </li>
+        </TransitionGroup>
         </ul>
     </div>
+    
 </template>
 
 <script setup lang="ts">
@@ -32,7 +34,6 @@ import { OptionsType } from '../types/OptionsType'
 //Receive data from parent component
 interface Props {
     todos: TodoType[];
-    isShowingModal: boolean;
 }
 
 const props = defineProps<Props>()
@@ -77,3 +78,19 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
 }
 
 </script>
+
+<style>
+
+.fade-move,
+.fade-enter-active{
+  transition: all 0.8s cubic-bezier(0.55, 0, 0.1, 1);
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+  transform: scaleY(0.01) translate(30px, 0);
+}
+
+
+</style>
