@@ -45,7 +45,6 @@
 import { ref, computed } from 'vue';
 
 import Header from './components/header/Header.vue';
-import TodoForm from './components/TodoForm.vue';
 import TodoDisplay from './components/TodoDisplay.vue';
 import Notodos from './components/NoTodos.vue';
 import NoTodosFound from './components/todo/NoTodosFound.vue';
@@ -77,7 +76,6 @@ const filteredTodos = computed(() =>
 
 //Add function to add elements to existing array of todos
 function addTodo() {
-    
     //define the largest id in the todos array
     //as a starting point (when no todos are added to list) maxId = 0
     let maxId = 0; 

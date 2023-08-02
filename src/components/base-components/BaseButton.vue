@@ -38,7 +38,6 @@ function addButtonColor(color: string) {
     buttonColor.value = "text-black border-2 border-black";
     break;
   }
-
   return buttonColor.value;
 }
 

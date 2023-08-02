@@ -19,7 +19,6 @@
         </TransitionGroup>
         </ul>
     </div>
-    
 </template>
 
 <script setup lang="ts">
@@ -91,6 +90,5 @@ function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
   opacity: 0;
   transform: scaleY(0.01) translate(30px, 0);
 }
-
 
 </style>

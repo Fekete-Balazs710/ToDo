@@ -13,8 +13,7 @@
                     placeholder="Search todos..."
                     @input="onFilterTodos(search)"
                 > 
-            </div>   
-            
+            </div>          
             <BaseButton 
                 class="scale-[0.85]"
                 type="submit"
@@ -22,10 +21,8 @@
                 color="black"
                 @click="onFilterTodos(search)"
             />
-
         </div>
     </div>
-    
 </template>
 
 <script setup lang="ts">

@@ -105,7 +105,6 @@
                 @click.stop="saveTodo(todo)"
             >
             </BaseButton>
-
             <BaseButton
                 class="ml-3"
                 button-title="Delete"
@@ -114,10 +113,8 @@
                 @click="activateModal"
             >
             </BaseButton>
-        </div>
-        
+        </div> 
     </div>
-    
 </template>
 
 <script setup lang="ts">

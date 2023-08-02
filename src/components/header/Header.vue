@@ -5,13 +5,10 @@
     </UserWelcome>
 
     <div class="container mx-auto text-center p-8 flex items-center justify-between lg:w-[40rem] w-min-[20rem]">
-
         <h1 class="lg:text-7xl sm:text-6xl text-4xl font-primary font-semibold text-black">
             To do list
         </h1>
-
         <AddTodoButton @addTodo="todoCreate"></AddTodoButton>
-
     </div>
 
     <TodoSearch 
@@ -24,12 +21,11 @@
     <TodoSort
         v-if="todos.length"
         :todos="todos"
-        :whichArrow="whichArrow"
+        :selectedArrow="selectedArrow"
         @sortTodos="sortTodos"
         @reverseTodos="reverseTodos"
     >
     </TodoSort>
-
 </template>
 
 <script setup lang="ts">
@@ -52,7 +48,7 @@ defineProps<Props>()
 //Add emit to modify data in parent component
 const emit = defineEmits(['addTodo', 'onFilterTodos', 'sortTodos', 'reverseTodos'])
 
-const whichArrow = ref('up')
+const selectedArrow = ref('up')
 
 function todoCreate() {
     emit('addTodo');
@@ -68,13 +64,6 @@ function sortTodos(attribute: string) {
 
 function reverseTodos() {
     emit('reverseTodos')
-    if(whichArrow.value === "down")
-    {
-        whichArrow.value = "up"
-    } else {
-        whichArrow.value = "down"
-    }
-    
+    selectedArrow.value = selectedArrow.value === "down" ? "up" : "down";
 }
-
 </script>

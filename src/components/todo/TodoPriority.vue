@@ -6,9 +6,7 @@
         :class="priorityColor"
         @click="toggleOptions"
     >
-        <p
-            class="hidden sm:flex"
-        >
+        <p class="hidden sm:flex">
             {{ todo.priority }} 
         </p>   
     </div>
@@ -20,13 +18,10 @@
                 :class="{ 'border-2 border-black': priorityColor === 'bg-[#38CBCB]' }"
         @click="updatePriorityColor(todo, {name: 'Low', value: 'low'})"
     >
-        <p
-            class="hidden sm:flex"
-        >
+        <p class="hidden sm:flex">
             {{ todo.priority }} 
         </p>   
     </div>
-
     <div class="rounded-full text-white text-lg font-secondary
                 font-semibold flex justify-center items-center ml-2
                 sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
@@ -34,9 +29,7 @@
         :class="{ 'border-2 border-black': priorityColor === 'bg-[#FFAB00]' }"
         @click="updatePriorityColor(todo, {name: 'Medium', value: 'medium'})"
     >
-        <p
-            class="hidden sm:flex"
-        >
+        <p class="hidden sm:flex">
             {{ todo.priority }} 
         </p>   
     </div>
@@ -48,13 +41,10 @@
         :class="{ 'border-2 border-black': priorityColor === 'bg-[#FF481F]' }"
         @click="updatePriorityColor(todo, {name: 'High', value: 'high'})"
     >
-        <p
-            class="hidden sm:flex"
-        >
+        <p class="hidden sm:flex">
             {{ todo.priority }} 
         </p>   
     </div>
-
 
     <ul 
         v-if="isShowingOptions"
@@ -95,7 +85,6 @@ const emit = defineEmits(['UpdatePriority'])
 
 const selectedColor = ref("bg-[#FF481F]");
 
-
 const isShowingOptions = ref(false);
 
 const colorMap: ColormapType = {
@@ -126,5 +115,4 @@ const optionsObj: OptionsType[] = [
     {name: "Medium", value: "medium"},
     {name: "Low", value: "low"}
 ]
-
 </script>
