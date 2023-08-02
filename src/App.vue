@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
 
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 import Header from './components/header/Header.vue';
 import TodoForm from './components/TodoForm.vue';
@@ -65,7 +65,6 @@ const priorityValues: Record<string, number> = {
   'Medium': 2,
   'Low': 1,
 };
-
 
 const filteredTodos = computed(() => 
    todos.value.filter((todo: TodoType) => 
@@ -99,6 +98,8 @@ function addTodo() {
     };
 
     todos.value.push(emptyTodo);
+
+    saveTodosToLocalStorage();
   }
 
 //Delete function to remove elements from todos array
@@ -116,38 +117,43 @@ function deleteTodo(todo: TodoType) {
   todos.value = todos.value.slice();
 
   isShowingModal.value = false;
+
+  saveTodosToLocalStorage()
 }
 
 function clearTodo() {
     todos.value = [];
+    saveTodosToLocalStorage()
 }  
 
 function toggleEditMode(id: number) {
   todos.value.map((todo: TodoType) => {
     todo.isEditing = (todo.id === id)
   })
+  saveTodosToLocalStorage()
 }
 
 function closeEditMode(todo: TodoType) {
   todo.isEditing = false;
+  saveTodosToLocalStorage()
 }
 
 function dateFormat(date: Date) {
-  const formattedDate = date.toLocaleDateString('en', {
-    year: 'numeric',
-    month: '2-digit',
-    day: 'numeric',
-  }).replace(/\//g, '.');
+  const day = date.getDate().toString().padStart(2, '0');
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const year = date.getFullYear().toString();
 
-  return formattedDate;
+  return `${day}.${month}.${year}`;
 }
 
 function toggleTodoCheckedState (todo: TodoType) {
   todo.isChecked = !todo.isChecked;
+  saveTodosToLocalStorage()
 }
 
 function updatePriority(todo: TodoType, option: OptionsType) {
     todo.priority = option.name;
+    saveTodosToLocalStorage()
 }
 
 function moveToPosition(todo: TodoType) {
@@ -164,6 +170,7 @@ function moveToPosition(todo: TodoType) {
   todos.value.forEach((todo: TodoType) => {
         todo.isEditing = false;
   });
+  saveTodosToLocalStorage()
 }
 
 
@@ -174,6 +181,9 @@ function filterTodos(searchValue: string) {
 function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
     todo.title = todoTitle;
     todo.description = todoDescription;
+    saveTodosToLocalStorage()
+    console.log('todo saved')
+    console.log(todoTitle + ' ' + todoDescription)
 }
 
 function sortTodos(attribute: string) {
@@ -202,83 +212,32 @@ function sortTodos(attribute: string) {
         const dateA = new Date(a.date);
         const dateB = new Date(b.date);
         return dateB.getTime() - dateA.getTime();
-        
+
       default:
         return 0;
     }
   });
+  saveTodosToLocalStorage()
 }
 
 function reverseTodos() {
   todos.value.reverse();
+  saveTodosToLocalStorage()
 }
 
-
-const todosimple1: TodoType = {
-      id: 888, 
-      title: "Make dinner", 
-      description: "Buy groceries and make dinner",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
+function getTodosFromLocalStorage() {
+  const storedTodos = localStorage.getItem('todos');
+  if (storedTodos) {
+    todos.value = JSON.parse(storedTodos);
+  }
 }
 
-const todosimple2: TodoType = {
-      id: 943, 
-      title: "Call a friend", 
-      description: "Talk about the latest trends",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
+// Function to save todos to localStorage
+function saveTodosToLocalStorage() {
+  localStorage.setItem('todos', JSON.stringify(todos.value));
 }
 
-const todosimple3: TodoType = {
-      id: 999, 
-      title: "Clean the house", 
-      description: "Prepare the house for the guests",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
+onMounted(getTodosFromLocalStorage);
 
-const todosimple4: TodoType = {
-      id: 978, 
-      title: "Pc setup", 
-      description: "Do some cable management",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-const todosimple5: TodoType = {
-      id: 348, 
-      title: "Make some cleaning in the kitchen", 
-      description: "Clean the kitchen after cooking",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-const todosimple6: TodoType = {
-      id: 428, 
-      title: "Add flour and sugar to shopping list", 
-      description: "Groceries",
-      priority: "High",
-      isChecked: false,
-      isEditing: false,
-      date: dateFormat(new Date())
-}
-
-todos.value.push(todosimple1);
-todos.value.push(todosimple2);
-todos.value.push(todosimple3);
-todos.value.push(todosimple4);
-todos.value.push(todosimple5);
-todos.value.push(todosimple6);
 </script>
 

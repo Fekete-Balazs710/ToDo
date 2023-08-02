@@ -3,7 +3,7 @@
         class="rounded-full text-white text-lg font-secondary
                 font-semibold justify-center items-center
                 sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer hidden sm:flex"
-        :class="selectedColor"
+        :class="priorityColor"
         @click="toggleOptions"
     >
         <p
@@ -17,7 +17,7 @@
                 font-semibold flex justify-center items-center ml-1
                 sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
                 bg-[#38CBCB]"
-                :class="{ 'border-2 border-black': selectedColor === 'bg-[#38CBCB]' }"
+                :class="{ 'border-2 border-black': priorityColor === 'bg-[#38CBCB]' }"
         @click="updatePriorityColor(todo, {name: 'Low', value: 'low'})"
     >
         <p
@@ -31,7 +31,7 @@
                 font-semibold flex justify-center items-center ml-2
                 sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
                 bg-[#FFAB00]"
-        :class="{ 'border-2 border-black': selectedColor === 'bg-[#FFAB00]' }"
+        :class="{ 'border-2 border-black': priorityColor === 'bg-[#FFAB00]' }"
         @click="updatePriorityColor(todo, {name: 'Medium', value: 'medium'})"
     >
         <p
@@ -45,7 +45,7 @@
                 font-semibold flex justify-center items-center ml-2
                 sm:w-32 sm:h-9 border-0 w-5 h-5 cursor-pointer sm:hidden
                 bg-[#FF481F]"
-        :class="{ 'border-2 border-black': selectedColor === 'bg-[#FF481F]' }"
+        :class="{ 'border-2 border-black': priorityColor === 'bg-[#FF481F]' }"
         @click="updatePriorityColor(todo, {name: 'High', value: 'high'})"
     >
         <p
@@ -84,6 +84,7 @@ import { TodoType } from '../../types/TodoType'
 //Receive data from parent component
 interface Props {
     todo: TodoType;
+    priorityColor: string
 }
 
 defineProps<Props>()
@@ -92,6 +93,7 @@ defineProps<Props>()
 const emit = defineEmits(['UpdatePriority'])
 
 const selectedColor = ref("bg-[#FF481F]");
+
 
 const isShowingOptions = ref(false);
 

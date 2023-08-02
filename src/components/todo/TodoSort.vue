@@ -1,23 +1,23 @@
 <template>
-   <div class="container mx-auto sm:text-center p-7 lg:w-[38rem] -mt-8 -mb-10">
+   <div class="container mx-auto sm:text-center sm:p-10 p-5 lg:w-[38rem] -mt-8 -mb-10">
         <div class="container sm:flex items-center justify-between">
             <div class="sm:flex justify-start items-center sm:text-center">
                 <BaseButton 
-                    class="scale-[0.85] w-20"
+                    class="sm:scale-[0.85] w-[6rem] sm:-ml-2 scale-[0.7] ml-2"
                     button-title="Title"
                     color="green"
                     @click="sortTodos('title')"
                 >
                 </BaseButton>
                 <BaseButton 
-                    class="scale-[0.85] w-28"
+                    class="sm:scale-[0.85] w-[7rem] scale-[0.7] -ml-4 sm:ml-0"
                     button-title="Description"
                     color="black"
                     @click="sortTodos('description')"
                 >
                 </BaseButton>
                 <BaseButton 
-                    class="scale-[0.85] w-20"
+                    class="sm:scale-[0.85] w-[6rem] scale-[0.7] -ml-4 sm:ml-0"
                     button-title="Priority"
                     color="white"
                     @click="sortTodos('priority')"
@@ -26,7 +26,7 @@
                 <BaseButton 
                     button-title="Date"
                     color="white"
-                    class="scale-[0.85] w-16"
+                    class="sm:scale-[0.85] w-[5rem] scale-[0.7] -ml-4 sm:ml-0"
                     @click="sortTodos('date')"
                 >
                 </BaseButton>
@@ -34,28 +34,28 @@
             </div>   
             
             <div class="flex sm:justify-end justify-start items-center text-center mt-3 sm:mt-0">
-                <BaseButton 
-                    button-title="↑"
-                    color="green"
-                    class="scale-[0.85] w-11"
+                <UpArrowButton
+                    class="ml-5 sm:ml-2"
                     @click="reverseTodos"
                 >
-                </BaseButton>
-                <BaseButton 
-                    button-title="↓"
-                    color="black"
-                    class="scale-[0.85] w-11"
+                </UpArrowButton>
+                <DownArrowButton
+                    class="ml-2"
                     @click="reverseTodos"
                 >
-                </BaseButton>
+                </DownArrowButton>
+
             </div> 
         </div>
     </div>
+    
 </template>
 
 <script setup lang="ts">
 
 import BaseButton from '../base-components/BaseButton.vue';
+import UpArrowButton from '../UpArrowButton.vue';
+import DownArrowButton from '../DownArrowButton.vue';
 
 import { TodoType } from '../../types/TodoType';
 
