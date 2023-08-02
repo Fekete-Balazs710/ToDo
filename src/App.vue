@@ -171,7 +171,7 @@ function moveToPosition(todo: TodoType) {
         todo.isEditing = false;
   });
   saveTodosToLocalStorage()
-}
+} 
 
 
 function filterTodos(searchValue: string) {
