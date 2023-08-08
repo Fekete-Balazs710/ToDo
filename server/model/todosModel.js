@@ -1,12 +1,12 @@
 import mongoose, { Types } from 'mongoose';
 
-export interface Todo {
-    title: string,
-    description?: string,
-    priority: string,
-    isChecked: boolean,
-    userId: Types.ObjectId
-} 
+// export interface Todo {
+//     title: string,
+//     description?: string,
+//     priority: string,
+//     isChecked: boolean,
+//     userId: Types.ObjectId
+// } 
 
 const todoSchema = new mongoose.Schema({
     title: {
@@ -24,10 +24,10 @@ const todoSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    userId: {
-        type: Types.ObjectId,
-        required: true
-    }
+    // userId: {
+    //     type: Types.ObjectId,
+    //     required: true
+    // }
 });
 
 export default mongoose.model('todo', todoSchema);
