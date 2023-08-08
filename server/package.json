@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.1.4",
+    "@types/mongoose": "^5.11.97",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "mongoose": "^7.4.2",
     "vue": "^3.3.4",
     "vuetify-use-dialog": "^0.6.0"
   },
