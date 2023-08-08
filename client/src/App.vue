@@ -29,13 +29,6 @@
     >
     </NoTodosFound>
 
-    <TodoForm 
-      class="hidden"
-      :todos="todos"
-      @clearTodo="clearTodo" 
-      @addTodo="addTodo"
-    /> 
-
   </div> 
 
 </template>
@@ -89,9 +82,9 @@ function addTodo() {
       id: maxId + 1, 
       title: "Title", 
       description: "Todo Description",
-      priority: "High",
+      priority: "Medium",
       isChecked: false,
-      isEditing: false,
+      isEditing: true,
       date: dateFormat(new Date())
     };
 
@@ -117,12 +110,7 @@ function deleteTodo(todo: TodoType) {
   isShowingModal.value = false;
 
   saveTodosToLocalStorage()
-}
-
-function clearTodo() {
-    todos.value = [];
-    saveTodosToLocalStorage()
-}  
+} 
 
 function toggleEditMode(id: number) {
   todos.value.map((todo: TodoType) => {
