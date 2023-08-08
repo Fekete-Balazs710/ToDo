@@ -13,6 +13,8 @@
     "@types/mongoose": "^5.11.97",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "body-parse": "^0.1.0",
+    "express": "^4.18.2",
     "mongoose": "^7.4.2",
     "vue": "^3.3.4",
     "vuetify-use-dialog": "^0.6.0"
@@ -26,5 +28,10 @@
     "typescript": "^5.0.2",
     "vite": "^4.4.5",
     "vue-tsc": "^1.8.5"
-  }
+  },
+  "main": "index.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }

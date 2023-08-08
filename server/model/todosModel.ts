@@ -8,7 +8,7 @@ export interface Todo {
     userId: Types.ObjectId
 } 
 
-const userSchema = new mongoose.Schema({
+const todoSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
@@ -30,4 +30,4 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model('todo', userSchema);
+export default mongoose.model('todo', todoSchema);
