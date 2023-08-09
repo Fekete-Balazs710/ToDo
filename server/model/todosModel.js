@@ -13,21 +13,21 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     }, 
-    desctiption: {
+    desciption: {
         type: String
     },
     priority: {
         type: String,
-        required: true
+        default: "High"
     },
     isChecked: {
         type: Boolean,
         default: true
     },
-    // userId: {
-    //     type: Types.ObjectId,
-    //     required: true
-    // }
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true
+    }
 });
 
 export default mongoose.model('todo', todoSchema);

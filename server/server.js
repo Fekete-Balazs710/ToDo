@@ -22,10 +22,11 @@ app.use(function(req, res, next) {
 const uri = process.env.MONGO_CONNECTION_STRING;
 mongoose.connect(uri, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    dbName: "todoapp"
 })
 .then(() => {
-    console.log("Successfully connected to MongoDB");
+    console.log("Successfully connected to MongoDB: " + mongoose.connection.name);
 })
 .catch(err => console.log(err));
 
