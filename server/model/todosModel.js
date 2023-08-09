@@ -1,31 +1,31 @@
 import mongoose, { Types } from 'mongoose';
 
-export interface Todo {
-    title: string,
-    description?: string,
-    priority: string,
-    isChecked: boolean,
-    userId: Types.ObjectId
-} 
+// export interface Todo {
+//     title: string,
+//     description?: string,
+//     priority: string,
+//     isChecked: boolean,
+//     userId: Types.ObjectId
+// } 
 
 const todoSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
     }, 
-    desctiption: {
+    desciption: {
         type: String
     },
     priority: {
         type: String,
-        required: true
+        default: "High"
     },
     isChecked: {
         type: Boolean,
         default: true
     },
     userId: {
-        type: Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     }
 });
