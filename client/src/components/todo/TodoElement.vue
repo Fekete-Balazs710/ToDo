@@ -9,7 +9,7 @@
     
     <div class="container p-5 border-2 border-black rounded-2xl mt-8
                 transform hover:scale-105 ease-out duration-300 bg-white"
-         @click="toggleEditMode(todo.id)" 
+         @click="toggleEditMode(todo)" 
          v-on-click-outside="onClickOutsideHandler"
     >
     <div class="flex sm:grid justify-between sm:justify-normal">
@@ -155,8 +155,8 @@ const priorityColor = computed(() => {
     } else return "bg-[#38CBCB]"
 })
 
-function toggleEditMode(id: number) {
-    emit('toggleEditMode', id); 
+function toggleEditMode(todo: TodoType) {
+    emit('toggleEditMode', todo); 
 }
 
 function toggleTodoCheckedState(todo: TodoType) {

@@ -37,16 +37,27 @@ router.delete('/delete/:id', async (req, res) => {
 
 // Update a todo by id
 router.put('/update/:id', async (req, res) => {
-    const tUpdate = await todo.updateOne(
-        { _id: req.params.id },
-        {
-            title: "New updated todo",
-            description: "New updated description",
-            priority: "High",
-            isChecked: false
-        }
-    )
-    res.json(tUpdate)
-})
+    const { isChecked } = req.body; // Extract the new isChecked value from the request body
+    try {
+        const { id } = req.params; // Extract the ID from the request parameters
+
+        // Update all todos with isChecked set to false except the one specified by ID
+        await todo.updateMany(
+            { _id: { $ne: id } }, // Update all documents except the one specified by ID
+            { $set: { isChecked: false } }
+        );
+
+        // Update the specified todo's isChecked field
+        const tUpdate = await todo.findByIdAndUpdate(
+            id,
+            { $set: { isChecked } },
+            { new: true }
+        );
+        res.json(tUpdate);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to update todos" });
+    }
+});
 
 export default router;

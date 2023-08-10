@@ -44,9 +44,11 @@
   
   import getAllTodos from '../service/todo.GetAll'
   import postTodos from '../service/todo.Post'
+  import editTodos from '../service/todo.Update';
 
   import { TodoType } from '../types/TodoType'
   import { OptionsType } from '../../src/types/OptionsType'
+import { ObjectId } from 'mongoose';
   
   // Array of TodoType objects for the todo list elements
   const todos = ref(localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')!) : []);
@@ -59,6 +61,7 @@
   
   const { todoCreate } = postTodos()
   const { todos2, GetAllTodos } = getAllTodos()
+
 
   onMounted(async () => {
   await GetAllTodos();
@@ -114,8 +117,8 @@
   //Delete function to remove elements from todos array
   function deleteTodo(todo: TodoType) {
    
-    const todoId = todo.id;
-    const index = todos.value.findIndex((todo: { id: number; }) => todo.id === todoId);
+    const todoId = todo._id;
+    const index = todos.value.findIndex((todo: { _id: ObjectId; }) => todo._id === todoId);
     if (index == -1) {
       return
     }
@@ -130,12 +133,14 @@
     saveTodosToLocalStorage()
   } 
   
-  function toggleEditMode(id: number) {
-    todos.value.map((todo: TodoType) => {
-      todo.isEditing = (todo.id === id)
-    })
-  }
-  
+  function toggleEditMode(todo: TodoType) {
+    console.log("Received todo:", todo); // Add this line
+    todo.isEditing = !todo.isEditing;
+    editTodos().todoEdit(todo._id, todo.isEditing); // Send the new isEditing value to the server
+    console.log("edit sent with id: " + todo._id);
+}
+
+
   function closeEditMode(todo: TodoType) {
     todo.isEditing = false;
   }
@@ -159,7 +164,7 @@
   }
   
   function moveToPosition(todo: TodoType) {
-    const index = todos.value.findIndex((t: TodoType) => t.id === todo.id);
+    const index = todos.value.findIndex((t: TodoType) => t._id === todo._id);
   
     if (index === -1) {
       return;

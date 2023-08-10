@@ -78,7 +78,7 @@
                                  required
                              >
                          </div>
-                         <BaseButton type="submit" class="w-full" button-title="Sign up" color="black"></BaseButton>
+                         <BaseButton type="submit" class="w-full" button-title="Sign up" color="black" @click="$router.push('dashboard')"></BaseButton>
                          
                          <p class="text-lg text-gray-500">
                              Already have an account? <a href="/login" class="font-semibold hover:underline">Log in</a>

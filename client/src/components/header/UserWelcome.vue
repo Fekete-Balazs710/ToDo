@@ -9,7 +9,9 @@
             </p>
             <BaseButton 
                 buttonTitle="Logout" 
-                color="gray">
+                color="gray"
+                @click="$router.push('login')"
+            >
             </BaseButton>
         </div>
     </div>
