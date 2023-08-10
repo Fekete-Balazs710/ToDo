@@ -86,30 +86,30 @@
   )
   
   //Add function to add elements to existing array of todos
-  function addTodo() {
-      //define the largest id in the todos array
-      //as a starting point (when no todos are added to list) maxId = 0
-      let maxId = 0; 
+  // function addTodo() {
+  //     //define the largest id in the todos array
+  //     //as a starting point (when no todos are added to list) maxId = 0
+  //     let maxId = 0; 
   
-      if (todos.value.length !== 0) {
-        maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
-      } 
+  //     if (todos.value.length !== 0) {
+  //       maxId = Math.max(...todos.value.map((todo: TodoType) => todo.id));
+  //     } 
       
-      //add new todo element to list, position: maxId + 1
-      const emptyTodo: TodoType = { 
-        id: maxId + 1, 
-        title: "Title", 
-        description: "Todo Description",
-        priority: "Medium",
-        isChecked: false,
-        isEditing: true,
-        date: dateFormat(new Date())
-      };
+  //     //add new todo element to list, position: maxId + 1
+  //     const emptyTodo: TodoType = { 
+  //       id: maxId + 1, 
+  //       title: "Title", 
+  //       description: "Todo Description",
+  //       priority: "Medium",
+  //       isChecked: false,
+  //       isEditing: true,
+  //       date: dateFormat(new Date())
+  //     };
   
-      todos.value.push(emptyTodo);
+  //     todos.value.push(emptyTodo);
   
-      saveTodosToLocalStorage();
-    }
+  //     saveTodosToLocalStorage();
+  //   }
   
   //Delete function to remove elements from todos array
   function deleteTodo(todo: TodoType) {
@@ -140,13 +140,13 @@
     todo.isEditing = false;
   }
   
-  function dateFormat(date: Date) {
-    const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const year = date.getFullYear().toString();
+  // function dateFormat(date: Date) {
+  //   const day = date.getDate().toString().padStart(2, '0');
+  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  //   const year = date.getFullYear().toString();
   
-    return `${day}.${month}.${year}`;
-  }
+  //   return `${day}.${month}.${year}`;
+  // }
   
   function toggleTodoCheckedState (todo: TodoType) {
     todo.isChecked = !todo.isChecked;
