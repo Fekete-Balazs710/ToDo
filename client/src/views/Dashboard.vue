@@ -42,8 +42,8 @@
   import Notodos from '../components/NoTodos.vue';
   import NoTodosFound from '../components/todo/NoTodosFound.vue';
   
-  import todoCrud from '../service/todoCrud.ts'
   import getAllTodos from '../service/todo.GetAll'
+  import postTodos from '../service/todo.Post'
 
   import { TodoType } from '../types/TodoType'
   import { OptionsType } from '../../src/types/OptionsType'
@@ -57,7 +57,7 @@
   
   const todosToShow = computed(() => todos2.value || []);
   
-  const { todoCreate } = todoCrud()
+  const { todoCreate } = postTodos()
   const { todos2, GetAllTodos } = getAllTodos()
 
   onMounted(async () => {
