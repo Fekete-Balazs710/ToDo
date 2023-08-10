@@ -42,11 +42,13 @@
   import Notodos from '../components/NoTodos.vue';
   import NoTodosFound from '../components/todo/NoTodosFound.vue';
   
-  import getAllTodos from '../service/todo.GetAll'
-  import postTodos from '../service/todo.Post'
+  import getAllTodos from '../service/todo.GetAll';
+  import postTodos from '../service/todo.Post';
   import editTodosEditingMode from '../service/todo.UpdateEditing';
-  import editTodosCheck from '../service/todo.UpdateCheck'
-  import editTodosPriority from '../service/todo.UpdatePriority'
+  import editTodosCheck from '../service/todo.UpdateCheck';
+  import editTodosPriority from '../service/todo.UpdatePriority';
+  import editTodosTitle from '../service/todo.UpdateTitle';
+  import editTodosDescription from '../service/todo.UpdateDescription';
   import deleteTodos from '../service/todo.Delete';
 
   import { TodoType } from '../types/TodoType'
@@ -147,22 +149,18 @@
  } 
 
   function toggleEditMode(todo: TodoType) {
-    todo.isEditing = !todo.isEditing;
-    editTodosEditingMode().todoEdit(todo._id, todo.isEditing); 
+    
+    if(!todo.isEditing) {     
+      todo.isEditing = !todo.isEditing;
+      editTodosEditingMode().todoEdit(todo._id, todo.isEditing); 
+    }
 }
 
 
   function closeEditMode(todo: TodoType) {
     todo.isEditing = false;
+    editTodosEditingMode().todoEdit(todo._id, todo.isEditing)
   }
-  
-  // function dateFormat(date: Date) {
-  //   const day = date.getDate().toString().padStart(2, '0');
-  //   const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  //   const year = date.getFullYear().toString();
-  
-  //   return `${day}.${month}.${year}`;
-  // }
   
   function toggleTodoCheckedState(todo: TodoType) {
     todo.isChecked = !todo.isChecked;
@@ -199,7 +197,8 @@
   function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
       todo.title = todoTitle;
       todo.description = todoDescription;
-      saveTodosToLocalStorage()
+      editTodosTitle().todoEdit(todo._id, todoTitle);
+      editTodosDescription().todoEdit(todo._id, todoDescription);
   }
   
   function sortTodos(attribute: string) {

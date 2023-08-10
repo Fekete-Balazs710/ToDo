@@ -98,4 +98,42 @@ router.put('/update/priority/:id', async (req, res) => {
     }
 });
 
+// Update title property of todo by id
+router.put('/update/title/:id', async (req, res) => {
+    const { title } = req.body; // Extract the new isChecked value from the request body
+    try {
+        const { id } = req.params; // Extract the ID from the request parameters
+
+        // Update the specified todo's isChecked field
+        const tUpdate = await todo.findByIdAndUpdate(
+            id,
+            { $set: { title } },
+            { new: true }
+        );
+        res.json(tUpdate);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to update todos" });
+    }
+});
+
+// Update description property of todo by id
+router.put('/update/description/:id', async (req, res) => {
+    const { description } = req.body; // Extract the new isChecked value from the request body
+    try {
+        const { id } = req.params; // Extract the ID from the request parameters
+
+        // Update the specified todo's isChecked field
+        const tUpdate = await todo.findByIdAndUpdate(
+            id,
+            { $set: { description } },
+            { new: true }
+        );
+        res.json(tUpdate);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to update todos" });
+    }
+});
+
 export default router;

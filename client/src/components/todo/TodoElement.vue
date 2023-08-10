@@ -40,7 +40,7 @@
                         class="flex justify-start font-primary text-s font-normal
                             text-[#333] ml-1 mt-1"
                     >
-                        {{ todo.date }}
+                        {{ formatDate(todo.date) }}
                     </p>
                 </div>
                 
@@ -183,6 +183,15 @@ function closeModal() {
 const newTitle = ref<HTMLElement | null>(null);
 const newDescriptionMobile = ref<HTMLElement | null>(null);
 const newDescriptionDesktop = ref<HTMLElement | null>(null);
+
+function formatDate(date: string | Date) {
+  const dateObj = new Date(date);
+  const day = dateObj.getDate().toString().padStart(2, '0');
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObj.getFullYear().toString();
+
+  return `${day}.${month}.${year}`;
+}
 
 function saveTodo(todo: TodoType) {
 
