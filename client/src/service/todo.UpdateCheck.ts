@@ -1,14 +1,14 @@
 import { ObjectId } from "mongoose";
 
-const editTodos = () => {
+const editTodosCheck= () => {
     
-    const todoEdit = (_id: ObjectId, isEditing: boolean) => {
+    const todoEdit = (_id: ObjectId, isChecked: boolean) => {
         const requestOptions = {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ isEditing }) // Send the new isEditing value
+            body: JSON.stringify({ isChecked }) // Send the new isEditing value
         }
-        fetch("http://localhost:3000/todos/update/" + _id, requestOptions)
+        fetch("http://localhost:3000/todos/update/isChecked/" + _id, requestOptions)
             .then(res => res.json())
             .then(res => { console.log(res) })
             .catch(error => {
@@ -21,4 +21,4 @@ const editTodos = () => {
     }
 }
 
-export default editTodos;
+export default editTodosCheck;

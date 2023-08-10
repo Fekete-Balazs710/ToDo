@@ -16,7 +16,7 @@ router.post('/new', async (req, res) => {
         description: "Todo Description",
         priority: "High",
         isChecked: false,
-        isEditing: true,
+        isEditing: false,
         date: Date.now()
     });
     const savedTodo = await newTodo.save()
@@ -35,17 +35,36 @@ router.delete('/delete/:id', async (req, res) => {
     res.json(tDelete)
 })
 
-// Update a todo by id
-router.put('/update/:id', async (req, res) => {
-    const { isChecked } = req.body; // Extract the new isChecked value from the request body
+// Update isEditing property of todo by id
+router.put('/update/isEditing/:id', async (req, res) => {
+    const { isEditing } = req.body; // Extract the new isChecked value from the request body
     try {
         const { id } = req.params; // Extract the ID from the request parameters
 
         // Update all todos with isChecked set to false except the one specified by ID
         await todo.updateMany(
             { _id: { $ne: id } }, // Update all documents except the one specified by ID
-            { $set: { isChecked: false } }
+            { $set: { isEditing: false } }
         );
+
+        // Update the specified todo's isChecked field
+        const tUpdate = await todo.findByIdAndUpdate(
+            id,
+            { $set: { isEditing } },
+            { new: true }
+        );
+        res.json(tUpdate);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Failed to update todos" });
+    }
+});
+
+// Update isChecked property of todo by id
+router.put('/update/isChecked/:id', async (req, res) => {
+    const { isChecked } = req.body; // Extract the new isChecked value from the request body
+    try {
+        const { id } = req.params; // Extract the ID from the request parameters
 
         // Update the specified todo's isChecked field
         const tUpdate = await todo.findByIdAndUpdate(

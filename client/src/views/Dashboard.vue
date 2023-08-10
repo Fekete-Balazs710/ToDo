@@ -44,11 +44,12 @@
   
   import getAllTodos from '../service/todo.GetAll'
   import postTodos from '../service/todo.Post'
-  import editTodos from '../service/todo.Update';
+  import editTodosEditingMode from '../service/todo.UpdateEditing';
+  import editTodosCheck from '../service/todo.UpdateCheck'
+  import deleteTodos from '../service/todo.Delete';
 
   import { TodoType } from '../types/TodoType'
   import { OptionsType } from '../../src/types/OptionsType'
-import { ObjectId } from 'mongoose';
   
   // Array of TodoType objects for the todo list elements
   const todos = ref(localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')!) : []);
@@ -65,7 +66,7 @@ import { ObjectId } from 'mongoose';
 
   onMounted(async () => {
   await GetAllTodos();
-});
+  });
 
   // -------------------------------------
   
@@ -115,29 +116,38 @@ import { ObjectId } from 'mongoose';
   //   }
   
   //Delete function to remove elements from todos array
-  function deleteTodo(todo: TodoType) {
+  // function deleteTodo(todo: TodoType) {
    
-    const todoId = todo._id;
-    const index = todos.value.findIndex((todo: { _id: ObjectId; }) => todo._id === todoId);
-    if (index == -1) {
-      return
+  //   const todoId = todo._id;
+  //   const index = todos.value.findIndex((todo: { _id: ObjectId; }) => todo._id === todoId);
+  //   if (index == -1) {
+  //     return
+  //   }
+  
+  //   todos.value.splice(index, 1);
+  
+  //   // Updating the todos array to trigger reactivity
+  //   todos.value = todos.value.slice();
+  
+  //   isShowingModal.value = false;
+  
+  //   saveTodosToLocalStorage()
+  // } 
+
+  function deleteTodo(todo: TodoType) {
+   const todoId = todo._id
+   deleteTodos().todoDelete(todoId)
+
+   // Remove the deleted todo from the todos array
+   const index = todosToShow.value.findIndex((t: TodoType) => t._id === todoId);
+    if (index !== -1) {
+        todosToShow.value.splice(index, 1);
     }
-  
-    todos.value.splice(index, 1);
-  
-    // Updating the todos array to trigger reactivity
-    todos.value = todos.value.slice();
-  
-    isShowingModal.value = false;
-  
-    saveTodosToLocalStorage()
-  } 
-  
+ } 
+
   function toggleEditMode(todo: TodoType) {
-    console.log("Received todo:", todo); // Add this line
     todo.isEditing = !todo.isEditing;
-    editTodos().todoEdit(todo._id, todo.isEditing); // Send the new isEditing value to the server
-    console.log("edit sent with id: " + todo._id);
+    editTodosEditingMode().todoEdit(todo._id, todo.isEditing); 
 }
 
 
@@ -153,9 +163,9 @@ import { ObjectId } from 'mongoose';
   //   return `${day}.${month}.${year}`;
   // }
   
-  function toggleTodoCheckedState (todo: TodoType) {
+  function toggleTodoCheckedState(todo: TodoType) {
     todo.isChecked = !todo.isChecked;
-    saveTodosToLocalStorage()
+    editTodosCheck().todoEdit(todo._id, todo.isChecked)
   }
   
   function updatePriority(todo: TodoType, option: OptionsType) {
@@ -235,4 +245,4 @@ import { ObjectId } from 'mongoose';
   
   </script>
   
-  
+  ../service/todo.UpdateEditing
