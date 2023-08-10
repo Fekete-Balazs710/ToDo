@@ -2,7 +2,7 @@
     <div>
       <Header 
         :todos="todosToShow"
-        @addTodo="todoCreate"
+        @addTodo="addTodo"
         @onFilterTodos="filterTodos" 
         @sortTodos="sortTodos"
         @reverseTodos="reverseTodos"
@@ -63,9 +63,8 @@
   
   const todosToShow = computed(() => todos2.value || []);
   
-  const { todoCreate } = postTodos()
-  const { todos2, GetAllTodos } = getAllTodos()
-
+  const { todoCreate } = postTodos();
+  const { todos2, GetAllTodos } = getAllTodos();
 
   onMounted(async () => {
   await GetAllTodos();
@@ -91,7 +90,12 @@
               .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
       )
   )
-  
+
+  function addTodo() {
+    todoCreate(); 
+    window.location.reload();
+  }
+
   //Add function to add elements to existing array of todos
   // function addTodo() {
   //     //define the largest id in the todos array
