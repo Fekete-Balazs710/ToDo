@@ -46,6 +46,7 @@
   import postTodos from '../service/todo.Post'
   import editTodosEditingMode from '../service/todo.UpdateEditing';
   import editTodosCheck from '../service/todo.UpdateCheck'
+  import editTodosPriority from '../service/todo.UpdatePriority'
   import deleteTodos from '../service/todo.Delete';
 
   import { TodoType } from '../types/TodoType'
@@ -169,8 +170,9 @@
   }
   
   function updatePriority(todo: TodoType, option: OptionsType) {
+      const priority = option.name;
       todo.priority = option.name;
-      saveTodosToLocalStorage()
+      editTodosPriority().todoEdit(todo._id, priority)
   }
   
   function moveToPosition(todo: TodoType) {
