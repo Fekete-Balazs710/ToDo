@@ -13,7 +13,7 @@ const todoSchema = new mongoose.Schema({
         type: String,
         required: true
     }, 
-    desciption: {
+    description: {
         type: String
     },
     priority: {
@@ -24,10 +24,18 @@ const todoSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+    isEditing: {
+        type: Boolean,
+        default: true
+    },
+    date: {
+        type: Date,
+        default: Date.now()
     }
+    // userId: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     required: true
+    // }
 });
 
 export default mongoose.model('todo', todoSchema);

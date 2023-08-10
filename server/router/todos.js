@@ -12,10 +12,12 @@ router.get('/', async (req, res) => {
 // Create new todo
 router.post('/new', async (req, res) => {
     const newTodo = new todo({
-        title: "New todo",
-        description: "New description",
+        title: "Title", 
+        description: "Todo Description",
         priority: "High",
-        isChecked: false
+        isChecked: false,
+        isEditing: true,
+        date: Date.now()
     });
     const savedTodo = await newTodo.save()
     res.json(savedTodo)
