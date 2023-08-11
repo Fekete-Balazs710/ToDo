@@ -13,7 +13,7 @@
       
       <TodoDisplay
         v-else
-        :todos="todosToShow" 
+        :todos="filteredTodos" 
         :isShowingModal="isShowingModal"
         @toggleEditMode="toggleEditMode"
         @toggleTodoCheckedState="toggleTodoCheckedState"
@@ -63,8 +63,7 @@
   
   const todosToShow = computed(() => todos2.value || []);
   
-  const { todoCreate } = postTodos();
-  const { todos2, GetAllTodos } = getAllTodos();
+  const { todos2, GetAllTodos } = getAllTodos()
 
   onMounted(async () => {
   await GetAllTodos();
@@ -83,7 +82,7 @@
   };
   
   const filteredTodos = computed(() => 
-     todos.value.filter((todo: TodoType) => 
+     todosToShow.value.filter((todo: TodoType) => 
          search.value
               .toLowerCase()
               .split(" ")
@@ -91,9 +90,10 @@
       )
   )
 
-  function addTodo() {
+  function addTodo(newTodo: TodoType) {
+    const { todoCreate } = postTodos();
     todoCreate(); 
-    window.location.reload();
+    todos2.value.push(newTodo);
   }
 
   //Add function to add elements to existing array of todos
@@ -168,6 +168,7 @@
   
   function toggleTodoCheckedState(todo: TodoType) {
     todo.isChecked = !todo.isChecked;
+    moveToPosition(todo);
     editTodosCheck().todoEdit(todo._id, todo.isChecked)
   }
   
@@ -178,17 +179,17 @@
   }
   
   function moveToPosition(todo: TodoType) {
-    const index = todos.value.findIndex((t: TodoType) => t._id === todo._id);
+    const index = todosToShow.value.findIndex((t: TodoType) => t._id === todo._id);
   
     if (index === -1) {
       return;
     }
   
-    todos.value.splice(index, 1)
+    todosToShow.value.splice(index, 1)
   
-    todo.isChecked ? todos.value.unshift(todo) : todos.value.push(todo)
+    todo.isChecked ? todosToShow.value.unshift(todo) : todosToShow.value.push(todo)
   
-    todos.value.forEach((todo: TodoType) => {
+    todosToShow.value.forEach((todo: TodoType) => {
           todo.isEditing = false;
     });
   }
@@ -206,7 +207,7 @@
   }
   
   function sortTodos(attribute: string) {
-    todos.value.sort((a: TodoType, b: TodoType) => {
+    todosToShow.value.sort((a: TodoType, b: TodoType) => {
       switch (attribute) {
         case 'title':
           const titleA = a.title.toLowerCase();
@@ -239,7 +240,7 @@
   }
   
   function reverseTodos() {
-    todos.value.reverse();
+    todosToShow.value.reverse();
     saveTodosToLocalStorage()
   }
   
