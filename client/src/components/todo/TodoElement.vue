@@ -200,7 +200,7 @@ function saveTodo(todo: TodoType) {
 
     updatedDescription = newDescriptionDesktop.value?.innerHTML || newDescriptionMobile.value?.innerHTML || ''
 
-    emit('saveTodo', todo, updatedTitle, updatedDescription)
+    emit('saveTodo', todo, updatedTitle, updatedDescription, todo.priority)
     emit('closeEditMode', todo)
 }
 

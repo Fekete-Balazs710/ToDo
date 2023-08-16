@@ -72,8 +72,8 @@ function moveToPosition(todo: TodoType) {
     emit('moveToPosition', todo)
 }
 
-function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
-    emit('saveTodo', todo, todoTitle, todoDescription)
+function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string, todoPriority: string) {
+    emit('saveTodo', todo, todoTitle, todoDescription, todoPriority)
 }
 
 </script>

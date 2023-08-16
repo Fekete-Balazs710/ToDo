@@ -54,10 +54,10 @@
   
   //const todos2 = ref<TodoType[]>()
   
-  const todosToShow = computed(() => todoService.getTodos().value || []);
+  const todosToShow = computed(() => todoService.get().value || []);
 
   onMounted(async () => {
-  await todoService.getAllTodos();
+  await todoService.getAll();
   });
 
   // -------------------------------------
@@ -82,13 +82,13 @@
   )
 
   function addTodo(newTodo: TodoType) {
-    todoService.addTodo();
+    todoService.add();
     todosToShow.value.push(newTodo);
   }
 
   function deleteTodo(todo: TodoType) {
    const todoId = todo._id;
-   todoService.deleteTodo(todoId);
+   todoService.delete(todoId);
 
    // Remove the deleted todo from the todos array
    const index = todosToShow.value.findIndex((t: TodoType) => t._id === todoId);
@@ -98,28 +98,23 @@
   } 
 
   function toggleEditMode(todo: TodoType) {
-    
     if(!todo.isEditing) {     
       todo.isEditing = !todo.isEditing;
-      todoService.editTodoEditingMode(todo._id, todo.isEditing); 
     }
   }
 
   function closeEditMode(todo: TodoType) {
     todo.isEditing = false;
-    todoService.editTodoEditingMode(todo._id, todo.isEditing)
   }
   
   function toggleTodoCheckedState(todo: TodoType) {
     todo.isChecked = !todo.isChecked;
     moveToPosition(todo);
-    todoService.editTodoCheck(todo._id, todo.isChecked)
+    todoService.editCheck(todo._id, todo.isChecked)
   }
   
   function updatePriority(todo: TodoType, option: OptionsType) {
-      const priority = option.name;
       todo.priority = option.name;
-      todoService.editTodoPriority(todo._id, priority)
   }
   
   function moveToPosition(todo: TodoType) {
@@ -143,11 +138,18 @@
     search.value = searchValue
   }
   
-  function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string) {
+  function saveTodo(todo: TodoType, todoTitle: string, todoDescription: string, todoPriority: string) {
       todo.title = todoTitle;
       todo.description = todoDescription;
-      todoService.editTodoTitle(todo._id, todoTitle);
-      todoService.editTodoDescription(todo._id, todoDescription);
+      todo.priority = todoPriority;
+
+      const updatedTodo = {
+        title: todoTitle,
+        description: todoDescription,
+        priority: todoPriority
+      }
+
+      todoService.update(todo._id, updatedTodo);
   }
   
   function sortTodos(attribute: string) {
@@ -194,5 +196,3 @@
   }
   
   </script>
-  
-  ../service/todo.UpdateEditing
