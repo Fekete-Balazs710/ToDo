@@ -1,43 +1,35 @@
 import express from "express";
 import todo from "../model/todosModel.js"
 
-import getAllTodos from '../service/todo.GetAll.js'
-import postTodos from "../service/todo.Post.js";
-import getByIdTodos from "../service/todo.GetById.js";
-import deleteTodo from "../service/todo.Delete.js";
-import updateIsEditing from "../service/todo.UpdateEditing.js";
-import updateIsChecked from "../service/todo.UpdateCheck.js";
-import updatePriority from "../service/todo.updatePriority.js";
-import updateTitle from "../service/todo.updateTitle.js";
-import updateDescription from "../service/todo.updateDescription.js";
+import todoService from "../service/todoService.js";
 
 const router = express.Router();
 
 // Get all todo routes
-router.get('/', getAllTodos)
+router.get('/', todoService.getAllTodos)
 
 // Create new todo
-router.post('/new', postTodos)
+router.post('/new', todoService.postTodos)
 
 // Get todo by id
-router.get('/get/:id', getByIdTodos)
+router.get('/get/:id', todoService.getByIdTodo)
 
 // Delete a todo by id
-router.delete('/delete/:id', deleteTodo)
+router.delete('/delete/:id', todoService.deleteTodo)
 
 // Update isEditing property of todo by id
-router.put('/update/isEditing/:id', updateIsEditing);
+router.put('/update/isEditing/:id', todoService.updateIsEditing);
 
 // Update isChecked property of todo by id
-router.put('/update/isChecked/:id', updateIsChecked);
+router.put('/update/isChecked/:id', todoService.updateIsChecked);
 
 // Update priority property of todo by id
-router.put('/update/priority/:id', updatePriority);
+router.put('/update/priority/:id', todoService.updatePriority);
 
 // Update title property of todo by id
-router.put('/update/title/:id', updateTitle);
+router.put('/update/title/:id', todoService.updateTitle);
 
 // Update description property of todo by id
-router.put('/update/description/:id', updateDescription);
+router.put('/update/description/:id', todoService.updateDescription);
 
 export default router;
