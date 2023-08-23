@@ -1,19 +1,11 @@
 import mongoose, { Types } from 'mongoose';
 
-// export interface Todo {
-//     title: string,
-//     description?: string,
-//     priority: string,
-//     isChecked: boolean,
-//     userId: Types.ObjectId
-// } 
-
 const todoSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true
     }, 
-    desciption: {
+    description: {
         type: String
     },
     priority: {
@@ -24,9 +16,9 @@ const todoSchema = new mongoose.Schema({
         type: Boolean,
         default: true
     },
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true
+    date: {
+        type: Date,
+        default: Date.now()
     }
 });
 

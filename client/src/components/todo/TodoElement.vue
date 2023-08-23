@@ -9,7 +9,7 @@
     
     <div class="container p-5 border-2 border-black rounded-2xl mt-8
                 transform hover:scale-105 ease-out duration-300 bg-white"
-         @click="toggleEditMode(todo.id)" 
+         @click="toggleEditMode(todo)" 
          v-on-click-outside="onClickOutsideHandler"
     >
     <div class="flex sm:grid justify-between sm:justify-normal">
@@ -40,7 +40,7 @@
                         class="flex justify-start font-primary text-s font-normal
                             text-[#333] ml-1 mt-1"
                     >
-                        {{ todo.date }}
+                        {{ formatDate(todo.date) }}
                     </p>
                 </div>
                 
@@ -155,8 +155,8 @@ const priorityColor = computed(() => {
     } else return "bg-[#38CBCB]"
 })
 
-function toggleEditMode(id: number) {
-    emit('toggleEditMode', id); 
+function toggleEditMode(todo: TodoType) {
+    emit('toggleEditMode', todo); 
 }
 
 function toggleTodoCheckedState(todo: TodoType) {
@@ -184,6 +184,15 @@ const newTitle = ref<HTMLElement | null>(null);
 const newDescriptionMobile = ref<HTMLElement | null>(null);
 const newDescriptionDesktop = ref<HTMLElement | null>(null);
 
+function formatDate(date: string | Date) {
+  const dateObj = new Date(date);
+  const day = dateObj.getDate().toString().padStart(2, '0');
+  const month = (dateObj.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObj.getFullYear().toString();
+
+  return `${day}.${month}.${year}`;
+}
+
 function saveTodo(todo: TodoType) {
 
     const updatedTitle = newTitle.value?.innerHTML || ''
@@ -191,7 +200,7 @@ function saveTodo(todo: TodoType) {
 
     updatedDescription = newDescriptionDesktop.value?.innerHTML || newDescriptionMobile.value?.innerHTML || ''
 
-    emit('saveTodo', todo, updatedTitle, updatedDescription)
+    emit('saveTodo', todo, updatedTitle, updatedDescription, todo.priority)
     emit('closeEditMode', todo)
 }
 

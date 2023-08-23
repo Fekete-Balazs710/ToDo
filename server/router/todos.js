@@ -1,50 +1,26 @@
 import express from "express";
 import todo from "../model/todosModel.js"
 
+import todoController from '../controller/todoController.js'
+
 const router = express.Router();
 
 // Get all todo routes
-router.get('/', async (req, res) => {
-    const todos = await todo.find();
-    res.json(todos);
-})
+router.get('/', todoController.getAllTodos)
 
 // Create new todo
-router.post('/new', async (req, res) => {
-    const newTodo = new todo({
-        title: "New todo",
-        description: "New description",
-        priority: "High",
-        isChecked: false
-    });
-    const savedTodo = await newTodo.save()
-    res.json(savedTodo)
-})
+router.post('/new', todoController.postTodos)
 
 // Get todo by id
-router.get('/get/:id', async (req, res) => {
-    const t = await todo.findById({ _id: req.params.id })
-    res.json(t)
-})
+router.get('/get/:id', todoController.getByIdTodo)
 
 // Delete a todo by id
-router.delete('/delete/:id', async (req, res) => {
-    const tDelete = await todo.findByIdAndDelete({ _id: req.params.id })
-    res.json(tDelete)
-})
+router.delete('/delete/:id', todoController.deleteTodo)
 
-// Update a todo by id
-router.put('/update/:id', async (req, res) => {
-    const tUpdate = await todo.updateOne(
-        { _id: req.params.id },
-        {
-            title: "New updated todo",
-            description: "New updated description",
-            priority: "High",
-            isChecked: false
-        }
-    )
-    res.json(tUpdate)
-})
+// Update isChecked property of todo by id
+router.put('/update/isChecked/:id', todoController.updateIsChecked);
+
+//Update title, description and priority
+router.put('/update/:id', todoController.update);
 
 export default router;
