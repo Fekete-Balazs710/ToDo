@@ -1,6 +1,7 @@
 <template>
     <UserWelcome 
-        username="Kovacs Roland"
+        :firstName="firstName"
+        :lastName="lastName"
     >
     </UserWelcome>
 
@@ -40,7 +41,9 @@ import TodoSort from '../todo/TodoSort.vue';
 import { TodoType } from '../../types/TodoType';
 
 interface Props {
-  todos: TodoType[]
+  todos: TodoType[],
+  firstName: string,
+  lastName: string
 }
 
 defineProps<Props>()

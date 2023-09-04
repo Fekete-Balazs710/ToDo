@@ -28,8 +28,8 @@
             <div class="sm:row-span-3">
                 <p
                     ref="newTitle"
-                    class="text-black font-primary lg:text-4xl text-3xl
-                            font-semibold text-left"
+                    class="text-black font-primary lg:text-4xl sm:text-3xl text-2xl
+                            font-semibold text-left max-w-[23rem] break-all"
                     :contenteditable="todo.isEditing"
                 > 
                     {{ todo.title }}
@@ -59,7 +59,7 @@
             <div class="row-span-2 hidden sm:flex">
                 <p 
                    ref="newDescriptionDesktop"
-                   class="font-primary font-semibold md:text-1xl text-left"
+                   class="font-primary font-semibold md:text-1xl text-left max-w-[31rem] break-all"
                    :class="todoDescriptionStyle"
                    :contenteditable="todo.isEditing"
                 >

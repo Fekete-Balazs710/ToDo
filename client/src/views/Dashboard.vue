@@ -2,15 +2,19 @@
     <div>
       <Header 
         :todos="todosToShow"
+        :firstName="credentials.firstName"
+        :lastName="credentials.lastName"
         @addTodo="addTodo"
         @onFilterTodos="filterTodos" 
         @sortTodos="sortTodos"
         @reverseTodos="reverseTodos"
       >
       </Header>
-  
-      <Notodos v-if="!todos.length"/>
-      
+
+      <SkeletonLoader v-if="isLoading"></SkeletonLoader>
+
+      <Notodos v-if="!todosToShow.length && !isLoading"/>
+
       <TodoDisplay
         v-else
         :todos="filteredTodos" 
@@ -25,65 +29,77 @@
       /> 
   
       <NoTodosFound
-        v-if="!filteredTodos.length && todos.length"
+        v-if="!filteredTodos.length && todosToShow.length && !isLoading"
       >
       </NoTodosFound>
-  
+      
     </div> 
   
   </template>
   
   <script setup lang="ts">
   
-  import { ref, computed, onMounted } from 'vue';
-  
+  import { ref, computed, onMounted, watch } from 'vue';
+  import { useRoute } from 'vue-router';
+
   import Header from '../components/header/Header.vue';
   import TodoDisplay from '../components/TodoDisplay.vue';
   import Notodos from '../components/NoTodos.vue';
   import NoTodosFound from '../components/todo/NoTodosFound.vue';
+  import SkeletonLoader from '../components/base-components/SkeletonLoader.vue'
 
   import todoService from '../service/todoService.ts'
-
   import { TodoType } from '../types/TodoType'
   import { OptionsType } from '../../src/types/OptionsType'
+
+  import { debounce } from 'lodash';
   
-  // Array of TodoType objects for the todo list elements
-  const todos = ref(localStorage.getItem('todos') ? JSON.parse(localStorage.getItem('todos')!) : []);
-  
-  // -------------------------------------
-  
-  //const todos2 = ref<TodoType[]>()
-  
+  const route = useRoute();
+  const userId = route.params.userId.toString(); 
+
   const todosToShow = computed(() => todoService.get().value || []);
 
-  onMounted(async () => {
-  await todoService.getAll();
+  const isLoading = ref(true);
+
+  const credentials = computed(() => {
+    const credentialsData: any = todoService.getCredentials();
+      return {
+        firstName: credentialsData.value?.firstName.toString() || "",
+        lastName: credentialsData.value?.lastName.toString() || ""
+      };
   });
 
-  // -------------------------------------
-  
   const search = ref("")
   
   const isShowingModal = ref(false);
   
-  const priorityValues: Record<string, number> = {
-    'High': 3,
-    'Medium': 2,
-    'Low': 1,
-  };
-  
-  const filteredTodos = computed(() => 
-     todosToShow.value.filter((todo: TodoType) => 
-         search.value
-              .toLowerCase()
-              .split(" ")
-              .every(v => todo.title.toLowerCase().includes(v) || todo.description.toLowerCase().includes(v))
-      )
-  )
+  const filteredTodos = ref<TodoType[]>([]);
 
-  function addTodo(newTodo: TodoType) {
-    todoService.add();
-    todosToShow.value.push(newTodo);
+  async function fetchFilteredTodos() {
+  try {
+    const data = await todoService.fetchFilteredTodos(userId, search.value);
+    filteredTodos.value = data;
+  } catch (error) {
+    console.error('Error fetching filtered todos:', error);
+  }
+}
+
+  function addTodo() {
+
+    // const newTodo: TodoType = {
+    //   _id: "1234",
+    //   title: 'Todo Title',
+    //   description: 'Todo Description',
+    //   priority: 'High',
+    //   isChecked: false,
+    //   isEditing: true,
+    //   date: Date().toString()
+    // };
+
+    todoService.create(userId);
+    //todosToShow.value.push(newTodo);
+    //filteredTodos.value.push(newTodo);
+    window.location.reload();
   }
 
   function deleteTodo(todo: TodoType) {
@@ -94,6 +110,7 @@
    const index = todosToShow.value.findIndex((t: TodoType) => t._id === todoId);
     if (index !== -1) {
         todosToShow.value.splice(index, 1);
+        filteredTodos.value.splice(index, 1);
     }
   } 
 
@@ -118,21 +135,20 @@
   }
   
   function moveToPosition(todo: TodoType) {
-    const index = todosToShow.value.findIndex((t: TodoType) => t._id === todo._id);
+    const index = filteredTodos.value.findIndex((t: TodoType) => t._id === todo._id);
   
     if (index === -1) {
       return;
     }
   
-    todosToShow.value.splice(index, 1)
+    filteredTodos.value.splice(index, 1)
   
-    todo.isChecked ? todosToShow.value.unshift(todo) : todosToShow.value.push(todo)
+    todo.isChecked ? filteredTodos.value.unshift(todo) : filteredTodos.value.push(todo)
   
-    todosToShow.value.forEach((todo: TodoType) => {
+    filteredTodos.value.forEach((todo: TodoType) => {
           todo.isEditing = false;
     });
   }
-  
   
   function filterTodos(searchValue: string) {
     search.value = searchValue
@@ -151,48 +167,36 @@
 
       todoService.update(todo._id, updatedTodo);
   }
-  
-  function sortTodos(attribute: string) {
-    todosToShow.value.sort((a: TodoType, b: TodoType) => {
-      switch (attribute) {
-        case 'title':
-          const titleA = a.title.toLowerCase();
-          const titleB = b.title.toLowerCase();
-          if (titleA < titleB) return 1;
-          if (titleA > titleB) return -1;
-          return 0;
-  
-        case 'description':
-          const descriptionA = a.description.toLowerCase();
-          const descriptionB = b.description.toLowerCase();
-          if (descriptionA < descriptionB) return 1;
-          if (descriptionA > descriptionB) return -1;
-          return 0;
-  
-        case 'priority':
-          const priorityA = priorityValues[a.priority];
-          const priorityB = priorityValues[b.priority];
-          return priorityB - priorityA;
-  
-        case 'date':
-          const dateA = new Date(a.date);
-          const dateB = new Date(b.date);
-          return dateB.getTime() - dateA.getTime();
-  
-        default:
-          return 0;
-      }
-    });
+
+  async function sortTodos(attribute: string) {
+  try {
+    const data = await todoService.sortTodos(userId, attribute);
+
+    if (!data || !Array.isArray(data)) {
+      throw new Error('Invalid response data format');
+    }
+
+    filteredTodos.value = data;
+  } catch (error) {
+    console.error('Error sorting todos:', error);
   }
-  
+}
+
   function reverseTodos() {
-    todosToShow.value.reverse();
-    saveTodosToLocalStorage()
+    filteredTodos.value.reverse();
   }
   
-  // Function to save todos to localStorage
-  function saveTodosToLocalStorage() {
-    localStorage.setItem('todos', JSON.stringify(todos.value));
-  }
-  
+ const debouncedFetchFilteredTodos = debounce(fetchFilteredTodos, 500);
+
+  watch(search, () => {
+    debouncedFetchFilteredTodos();
+  });
+
+  onMounted(async () => {
+    await todoService.getAll(userId);
+    await fetchFilteredTodos();
+    await todoService.getUserCredentials(userId);
+    isLoading.value = false;
+  });
+
   </script>
