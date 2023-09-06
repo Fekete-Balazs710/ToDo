@@ -87,7 +87,7 @@
    const email = emailInput.value;
    const password = passwordInput.value;
  
-   fetch('http://localhost:3700/todos/login', {
+   fetch('http://localhost:3700/users/login', {
      method: 'POST',
      headers: {
        'Content-Type': 'application/json',

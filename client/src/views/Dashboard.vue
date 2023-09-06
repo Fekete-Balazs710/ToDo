@@ -64,8 +64,8 @@
   const credentials = computed(() => {
     const credentialsData: any = todoService.getCredentials();
       return {
-        firstName: credentialsData.value?.firstName.toString() || "",
-        lastName: credentialsData.value?.lastName.toString() || ""
+        firstName: credentialsData.value?.firstName?.toString() || "",
+        lastName: credentialsData.value?.lastName?.toString() || ""
       };
   });
 

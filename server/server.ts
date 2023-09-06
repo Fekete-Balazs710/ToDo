@@ -4,6 +4,7 @@ import mongoose, { ConnectOptions } from 'mongoose';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser'; // Import cookie-parser
 import TodosRoute from './router/todos';
+import UsersRoute from './router/users';
 import dotenv from 'dotenv';
 
 // create the express app
@@ -51,6 +52,8 @@ app.get('/', (req: express.Request, res: express.Response) => {
 });
 
 app.use('/todos', TodosRoute);
+
+app.use('/users', UsersRoute);
 
 // start the server at the given port from .env file
 const port = process.env.PORT!;

@@ -10,7 +10,7 @@
             <BaseButton 
                 buttonTitle="Logout" 
                 color="gray"
-                @click="deleteCookie"
+                @click="handleLogout(userId)"
             >
             </BaseButton>
         </div>
@@ -21,16 +21,23 @@
 
 import BaseButton from '../base-components/BaseButton.vue';
 import router from '../../router/router';
+import todoService from '../../service/todoService';
+import { useRoute } from 'vue-router';
+
 //Receive data from parent component
 interface Props {
     firstName: string;
-    lastName: string
+    lastName: string;
 }
 
 defineProps<Props>()
 
-function deleteCookie() {
+const route = useRoute();
+const userId = route.params.userId.toString(); 
+
+function handleLogout(userId: string) {
     document.cookie = `authToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    todoService.deleteFromWhitelist(userId);
     router.push('/login')
 }
 

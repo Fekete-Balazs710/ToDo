@@ -5,6 +5,7 @@ import { createHash } from 'crypto';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
+import todoService from '../service/todoService';
 
 class TodoController {
     async deleteTodo(req: Request, res: Response) {
@@ -175,10 +176,25 @@ class TodoController {
             
             console.log("Token: " + token);
 
+            //save the userId and authToken to whitelist collection
+            const userId = user._id;
+            await todoService.addUserToWhitelist(userId, token);
+
             res.status(200).json({ user, token });
         } catch (error) {
             console.error('Login error:', error);
             res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+    async logout(req: Request, res: Response) {
+        try {
+            const { userId } = req.params;
+            const deletedUser = await TodoService.deleteFromWhitelist(userId);
+            res.json(deletedUser);
+
+        } catch(error: any) {
+
         }
     }
 }

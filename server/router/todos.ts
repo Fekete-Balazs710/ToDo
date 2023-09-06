@@ -34,15 +34,4 @@ router.post('/search/:userId', todoController.search);
 //Sorting functionality for todos
 router.post('/sort/:userId', todoController.sort);
 
-// Get user by email
-router.get('/users/email/:email', todoController.getUserByEmail);
-
-// Add new user to the database on signup
-router.post('/users/new', todoController.addUser);
-
-// Get user credentials
-router.get('/users/credentials/:userId', todoController.getUserCredentials);
-
-router.post('/login', todoController.login);
-
 export default router;

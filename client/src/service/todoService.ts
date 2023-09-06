@@ -13,7 +13,7 @@ class TodoService {
   async getAll(userId: string) {
     try {
 
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/${userId}`);
+      const response = await fetch(`${import.meta.env.VITE_TODOS_URL}/${userId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch todos');
       }
@@ -26,7 +26,7 @@ class TodoService {
 
   async delete(_id: ObjectId) {
     try {
-      await fetch(`${import.meta.env.VITE_BASE_URL}/delete/${_id}`, {
+      await fetch(`${import.meta.env.VITE_TODOS_URL}/delete/${_id}`, {
         method: "DELETE",
       });
       this.todos.value = this.todos.value.filter((todo) => todo._id !== _id);
@@ -37,7 +37,7 @@ class TodoService {
 
   async create(userId: string) {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/new/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_TODOS_URL}/new/${userId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +58,7 @@ class TodoService {
         body: JSON.stringify({ isChecked }) // Send the new isChecked value
       };
 
-      await fetch(`${import.meta.env.VITE_BASE_URL}/update/isChecked/${_id}`, requestOptions);
+      await fetch(`${import.meta.env.VITE_TODOS_URL}/update/isChecked/${_id}`, requestOptions);
 
       // Update the isChecked property locally
       const todoToUpdate = this.todos.value.find((todo) => todo._id === _id);
@@ -81,7 +81,7 @@ class TodoService {
             priority: updatedTodo.priority })
       };
 
-      await fetch(`${import.meta.env.VITE_BASE_URL}/update/${_id}`, requestOptions);
+      await fetch(`${import.meta.env.VITE_TODOS_URL}/update/${_id}`, requestOptions);
 
       // Update the description property locally
       const todoToUpdate = this.todos.value.find((todo) => todo._id === _id);
@@ -97,7 +97,7 @@ class TodoService {
 
   async fetchFilteredTodos(userId: string, searchQuery: string) {
     try {
-      const url = `${import.meta.env.VITE_BASE_URL}/search/${userId}`;
+      const url = `${import.meta.env.VITE_TODOS_URL}/search/${userId}`;
 
       const response = await fetch(url, {
         method: 'POST',
@@ -121,7 +121,7 @@ class TodoService {
 
   async sortTodos(userId: string, attribute: string) {
     try {
-      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/sort/${userId}`, {
+      const response = await fetch(`${import.meta.env.VITE_TODOS_URL}/sort/${userId}`, {
           method: 'POST',
           headers: {
               'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ class TodoService {
 
   async getUserByEmail(email: String) {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/users/email/${email}`);
+        const response = await fetch(`${import.meta.env.VITE_USERS_URL}/users/email/${email}`);
         
         if (!response.ok) {
             throw new Error('Failed to fetch user by email');
@@ -165,7 +165,7 @@ class TodoService {
         body: JSON.stringify(newUser),
      }
 
-     await fetch(`${import.meta.env.VITE_BASE_URL}/users/new`, requestOptions)
+     await fetch(`${import.meta.env.VITE_USERS_URL}/users/new`, requestOptions)
     } catch (error) {
       console.error(error);
     }
@@ -173,9 +173,21 @@ class TodoService {
 
   async getUserCredentials(userId: string) {
     try {
-        const response = await fetch(`${import.meta.env.VITE_BASE_URL}/users/credentials/${userId}`);
+        const response = await fetch(`${import.meta.env.VITE_USERS_URL}/users/credentials/${userId}`);
         const data = await response.json();
         this.credentials.value = data; 
+    } catch (error) {
+        console.log(error);
+    }
+  }
+
+  async deleteFromWhitelist(userId: string) {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_USERS_URL}/logout/${userId}`, {
+        method: "DELETE",
+      });
+      const data = await response.json();
+      this.credentials.value = data; 
     } catch (error) {
         console.log(error);
     }

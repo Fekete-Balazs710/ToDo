@@ -1,6 +1,7 @@
 import TodoModel from "../model/todosModel";
 import UserModel from "../model/userModel";
 import ArchiveModel from "../model/archiveModel";
+import whitelistModel from "../model/whitelistModel";
 
 const priorityValues: Record<string, number> = {
     'High': 3,
@@ -154,6 +155,32 @@ class TodoService {
 
         } catch (error) {
             throw new Error("Failed to add user");
+        }
+    }
+
+    async addUserToWhitelist(userId: string, authToken: string) {
+        try {
+            const newUser = new whitelistModel({
+                userId,
+                authToken
+            })
+
+            const savedUser = await newUser.save();
+
+            return savedUser;
+
+        } catch (error) {
+            throw new Error("Failed to add user to whitelist")
+        }
+    }
+
+    async deleteFromWhitelist(userId: string) {
+        try {
+            const userToDelete = await whitelistModel.findOneAndDelete({ userId });
+            
+            return userToDelete;
+        } catch (error) {
+            throw new Error("Failed to delete user from whitelist")
         }
     }
 
