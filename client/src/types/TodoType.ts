@@ -1,6 +1,8 @@
+import { ObjectId } from "mongoose";
+
 //Defining the type of todo elements
 export interface TodoType {
-    id: number,
+    _id: ObjectId,
     title: string,
     description: string, 
     priority: string,

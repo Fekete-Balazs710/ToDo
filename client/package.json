@@ -12,13 +12,20 @@
     "@ant-design/icons": "^5.1.4",
     "@vueuse/components": "^10.2.1",
     "@vueuse/core": "^10.2.1",
+    "canvas-confetti": "^1.6.0",
+    "dotenv": "^16.3.1",
+    "lodash": "^4.17.21",
     "mongoose": "^7.4.2",
+    "pinia": "^2.1.6",
+    "uuid": "^9.0.0",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4",
-    "vuetify-use-dialog": "^0.6.0"
+    "vuetify-use-dialog": "^0.6.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.4",
+    "@types/lodash": "^4.14.197",
     "@vitejs/plugin-vue": "^4.2.3",
     "@vue/cli-plugin-router": "~5.0.0",
     "autoprefixer": "^10.4.14",
